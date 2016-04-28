@@ -11,8 +11,9 @@ Matcher::Matcher( std::vector< Requirement* > _requirements )
 
 Matcher::~Matcher()
 {
-    for ( auto it = requirements.begin(); it != requirements.end(); ++it )
-        delete *it;
+    // requirements may be used later, should be cleared from outside of the class, when no longer needed
+//    for ( auto it = requirements.begin(); it != requirements.end(); ++it )
+//        delete *it;
 
     requirements.clear();
 }
