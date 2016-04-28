@@ -9,6 +9,14 @@ Matcher::Matcher( std::vector< Requirement* > _requirements )
     this->requirements = _requirements;
 }
 
+Matcher::~Matcher()
+{
+    for ( auto it = requirements.begin(); it != requirements.end(); ++it )
+        delete *it;
+
+    requirements.clear();
+}
+
 bool Matcher::match( Element* element )
 {
     bool matched = false;

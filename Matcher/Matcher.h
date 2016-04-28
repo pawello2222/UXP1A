@@ -41,6 +41,7 @@ class Matcher
 {
 public:
     Matcher( std::vector< Requirement* > _requirements );
+    ~Matcher();
 
     bool match( Element* element );
     bool areRequirementsMet();

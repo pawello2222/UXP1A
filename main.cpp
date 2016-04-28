@@ -11,7 +11,8 @@ int main()
 {
     std::vector< Requirement* > reqs = { new Requirement( "integer", "1" ), new Requirement( "string", "ASD" ) };
     Matcher* matcher = new Matcher( reqs );
-    matcher->match( new Element( "ASD" ) );
+
+    matcher->match( new Element( "ASD" ) ); // if one returns false -> no match
     matcher->match( new Element( 1 ) );
 //    matcher->match( new Element( (float)1.0 ) );
 
