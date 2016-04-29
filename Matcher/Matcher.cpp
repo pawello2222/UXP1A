@@ -4,16 +4,18 @@
 
 #include "Matcher.h"
 
-Matcher& Matcher::getInstance()
+Matcher::Matcher( std::vector< Requirement* > _requirements )
 {
-    static Matcher instance;
-
-    return instance;
+    this->requirements = _requirements;
 }
 
-Matcher::Matcher()
+Matcher::~Matcher()
 {
+    // requirements may be used later, should be cleared from outside of the class, when no longer needed
+//    for ( auto it = requirements.begin(); it != requirements.end(); ++it )
+//        delete *it;
 
+    requirements.clear();
 }
 
 bool Matcher::match( Element* element )
@@ -41,9 +43,4 @@ bool Matcher::match( Element* element )
 bool Matcher::areRequirementsMet()
 {
     return !requirements.size();
-}
-
-void Matcher::setRequirements( std::vector< Requirement* > _requirements )
-{
-    this->requirements = _requirements;
 }

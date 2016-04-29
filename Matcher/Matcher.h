@@ -40,18 +40,13 @@ public:
 class Matcher
 {
 public:
-    static Matcher& getInstance();
-    Matcher( Matcher const& ) = delete;
-    void operator=( Matcher const& ) = delete;
+    Matcher( std::vector< Requirement* > _requirements );
+    ~Matcher();
 
     bool match( Element* element );
     bool areRequirementsMet();
 
-    void setRequirements( std::vector< Requirement* > _requirements);
-
 private:
-    Matcher();
-
     std::vector< Requirement* > requirements;
 };
 
