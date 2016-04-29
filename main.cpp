@@ -9,15 +9,27 @@ using namespace std;
 
 int main()
 {
-    std::vector< Requirement* > reqs = { new Requirement( "integer", "1" ), new Requirement( "string", "ASD" ) };
-    Matcher* matcher = new Matcher( reqs );
+    Matcher& matcher = Matcher::getInstance();
 
-    matcher->match( new Element( "ASD" ) ); // if one returns false -> no match
-    matcher->match( new Element( 1 ) );
+    std::vector< Requirement* > reqs = { new Requirement( "integer", "1" ), new Requirement( "string", "ASD" ) };
+    matcher.setRequirements( reqs );
+
+    matcher.match( new Element( "ASD" ) ); // if one returns false -> no match
+    matcher.match( new Element( 1 ) );
 //    matcher->match( new Element( (float)1.0 ) );
 
+    std::cout << matcher.areRequirementsMet() << std::endl;
+    // delete unused requirements
 
-    std::cout << matcher->areRequirementsMet() << std::endl;
+    reqs = { new Requirement( "string", "*" ), new Requirement( "float", "1.0" ) };
+    matcher.setRequirements( reqs );
+
+    matcher.match( new Element( "ASD" ) ); // if one returns false -> no match
+    matcher.match( new Element( 1 ) );
+//    matcher.match( new Element( (float)1.0 ) );
+
+    std::cout << matcher.areRequirementsMet() << std::endl;
+    // delete unused requirements
 
     return 0;
 }
