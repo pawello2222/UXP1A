@@ -20,6 +20,9 @@ Matcher::~Matcher()
 
 bool Matcher::match( Element* element )
 {
+    if ( areRequirementsMet() )
+        return true;
+
     bool matched = false;
 
     for ( auto it = requirements.begin(); it != requirements.end(); ++it )
