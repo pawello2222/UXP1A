@@ -7,9 +7,9 @@
 
 enum LindaTupleItemType
 {
+    Float,
     Integer,
     String,
-    Float
 };
 
 #endif //UXP1A_LINDATUPLEITEMTYPE_H

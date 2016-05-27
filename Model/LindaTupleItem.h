@@ -7,6 +7,7 @@
 
 
 #include <string>
+#include <memory>
 #include "LindaTupleItemType.h"
 
 class LindaTupleItem final
@@ -16,7 +17,6 @@ public:
     LindaTupleItem(int value);
     LindaTupleItem(float value);
     LindaTupleItem(std::string value);
-    LindaTupleItem(const LindaTupleItem& lindaTupleItem);
 
     ~LindaTupleItem();
 
@@ -27,12 +27,9 @@ public:
 private:
     void GuardTypeEquals(LindaTupleItemType lindaTupleItemType);
     LindaTupleItemType m_type;
-    union
-    {
-        int m_integerValue;
-        float m_floatValue;
-        std::string m_stringValue;
-    };
+    int m_integerValue;
+    float m_floatValue;
+    std::string m_stringValue;
 };
 
 

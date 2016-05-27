@@ -2,8 +2,8 @@
 // Created by anowikowski on 27.05.16.
 //
 
+#include <iostream>
 #include "LindaTupleItem.h"
-#include "../Exception/UnknownLindaTupleType.h"
 #include "../Exception/InvalidOperation.h"
 
 LindaTupleItem::LindaTupleItem(int value) : m_type(LindaTupleItemType::Integer), m_integerValue(value)
@@ -19,24 +19,6 @@ LindaTupleItem::LindaTupleItem(float value) : m_type(LindaTupleItemType::Float),
 LindaTupleItem::LindaTupleItem(std::string value) : m_type(LindaTupleItemType::String), m_stringValue(value)
 {
 
-}
-
-LindaTupleItem::LindaTupleItem(const LindaTupleItem &lindaTupleItem) : m_type(lindaTupleItem.m_type)
-{
-    switch (lindaTupleItem.m_type)
-    {
-        case LindaTupleItemType::Integer:
-            this->m_integerValue = lindaTupleItem.m_integerValue;
-            break;
-        case LindaTupleItemType::Float:
-            this->m_floatValue = lindaTupleItem.m_floatValue;
-            break;
-        case LindaTupleItemType::String:
-            this->m_stringValue = lindaTupleItem.m_stringValue;
-            break;
-        default:
-            throw UnknownLindaTupleType();
-    }
 }
 
 LindaTupleItem::~LindaTupleItem()

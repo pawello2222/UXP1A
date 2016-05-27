@@ -9,3 +9,7 @@ LindaTuple::LindaTuple(std::vector<LindaTupleItem> lindaTupleItems) : m_lindaTup
 
 }
 
+std::vector<LindaTupleItem>& LindaTuple::GetItems()
+{
+    return this->m_lindaTupleItems;
+}

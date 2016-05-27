@@ -2,19 +2,25 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/Matcher/Matcher.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Matcher/Matcher.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItem.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemType.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItem.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/UnknownLindaTupleType.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/UnknownLindaTupleType.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/InvalidOperation.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/InvalidOperation.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/IPC/LindaTuplePool.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/IPC/LindaTuplePool.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Matcher/Matcher.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Matcher/Matcher.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemTemplate.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemType.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemTemplate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItem.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleTemplate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItem.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleTemplate.cpp" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">

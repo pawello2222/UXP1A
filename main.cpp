@@ -3,27 +3,21 @@
 //
 
 #include <iostream>
-#include "Matcher/Matcher.h"
 #include "Model/LindaTupleItem.h"
 #include "Model/LindaTuple.h"
+#include "Model/LindaTupleTemplate.h"
 
 using namespace std;
 
 int main()
 {
-    std::vector< Requirement* > reqs = { new Requirement( LindaTupleItemType::Integer, "1" ), new Requirement( LindaTupleItemType::String, "ASD" ) };
-    Matcher* matcher = new Matcher( reqs );
-
-
-    LindaTupleItem l = LindaTupleItem(123);
-    LindaTuple lt = LindaTuple({l});
-
-    matcher->match( new Element( "ASD" ) ); // if one returns false -> no match
-    matcher->match( new Element( 1 ) );
-//    matcher->match( new Element( (float)1.0 ) );
-
-
-    std::cout << matcher->areRequirementsMet() << std::endl;
+    LindaTuple lt1 = LindaTuple({LindaTupleItem(123)});
+    LindaTuple lt2 = LindaTuple({LindaTupleItem(124)});
+    LindaTuple lt3 = LindaTuple({LindaTupleItem("123")});
+    LindaTupleTemplate tt = LindaTupleTemplate({LindaTupleItemTemplate(LindaTupleItemType::Integer, "123")});
+    std::cout << "Expected 1, got: " << tt.IsMatch(lt1) << std::endl;
+    std::cout << "Expected 0, got: " <<tt.IsMatch(lt2) << std::endl;
+    std::cout << "Expected 0, got: " <<tt.IsMatch(lt3) << std::endl;
 
     return 0;
 }

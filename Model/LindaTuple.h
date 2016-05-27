@@ -14,6 +14,7 @@ class LindaTuple final
 public:
     LindaTuple() = delete;
     LindaTuple(std::vector<LindaTupleItem> lindaTupleItems);
+    std::vector<LindaTupleItem>& GetItems();
 private:
     std::vector<LindaTupleItem> m_lindaTupleItems;
 };
