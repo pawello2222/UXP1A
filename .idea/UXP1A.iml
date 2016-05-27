@@ -12,6 +12,8 @@
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/UnknownLindaTupleType.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/UnknownLindaTupleType.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/InvalidOperation.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/InvalidOperation.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

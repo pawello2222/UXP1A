@@ -25,6 +25,7 @@ public:
     float GetFloatValue();
     std::string GetStringValue();
 private:
+    void GuardTypeEquals(LindaTupleItemType lindaTupleItemType);
     LindaTupleItemType m_type;
     union
     {
