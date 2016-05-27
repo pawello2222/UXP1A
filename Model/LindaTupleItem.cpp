@@ -3,6 +3,7 @@
 //
 
 #include "LindaTupleItem.h"
+#include "../Exception/UnknownLindaTupleType.h"
 
 LindaTupleItem::LindaTupleItem(int value) : m_type(LindaTupleItemType::Integer), m_integerValue(value)
 {
@@ -32,8 +33,8 @@ LindaTupleItem::LindaTupleItem(const LindaTupleItem &lindaTupleItem) : m_type(li
         case LindaTupleItemType::String:
             this->m_stringValue = lindaTupleItem.m_stringValue;
             break;
-            //default:
-            //TODO default: Throw exception
+        default:
+            throw UnknownLindaTupleType();
     }
 }
 
