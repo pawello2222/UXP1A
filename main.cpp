@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    std::vector< Requirement* > reqs = { new Requirement( "integer", "1" ), new Requirement( "string", "ASD" ) };
+    std::vector< Requirement* > reqs = { new Requirement( LindaTupleItemType::Integer, "1" ), new Requirement( LindaTupleItemType::String, "ASD" ) };
     Matcher* matcher = new Matcher( reqs );
 
     matcher->match( new Element( "ASD" ) ); // if one returns false -> no match

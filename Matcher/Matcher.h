@@ -9,16 +9,17 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "../Model/LindaTupleItemType.h"
 
 //todo move data structures to another directory
 class Element
 {
 public:
-    Element( int _i ) : type( "integer" ), i( _i ) {};
-    Element( float _f ) : type( "float" ), f( _f ) {};
-    Element( std::string _s ) : type( "string" ), s( _s ) {};
+    Element( int _i ) : type(LindaTupleItemType::Integer), i( _i ) {};
+    Element( float _f ) : type(LindaTupleItemType::Float), f( _f ) {};
+    Element( std::string _s ) : type(LindaTupleItemType::String), s( _s ) {};
 
-    std::string type;
+    LindaTupleItemType type;
     union
     {
         int i;
@@ -30,9 +31,9 @@ public:
 class Requirement
 {
 public:
-    Requirement( std::string _type, std::string _value ) : type( _type ), value( _value ) {};
+    Requirement( LindaTupleItemType _type, std::string _value ) : type( _type ), value( _value ) {};
 
-    std::string type;
+    LindaTupleItemType type;
     std::string value;
 };
 
