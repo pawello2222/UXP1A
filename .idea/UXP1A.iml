@@ -3,7 +3,11 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItem.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemType.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItem.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Matcher/Matcher.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Matcher/Matcher.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
