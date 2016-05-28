@@ -6,17 +6,17 @@
 #include "LindaTupleItem.h"
 #include "../Exception/InvalidOperation.h"
 
-LindaTupleItem::LindaTupleItem(int value) : m_type(LindaTupleItemType::Integer), m_integerValue(value)
+LindaTupleItem::LindaTupleItem(int value) : m_type(LindaTupleItemType::Integer), m_iValue(value)
 {
 
 }
 
-LindaTupleItem::LindaTupleItem(float value) : m_type(LindaTupleItemType::Float), m_floatValue(value)
+LindaTupleItem::LindaTupleItem(float value) : m_type(LindaTupleItemType::Float), m_fValue(value)
 {
 
 }
 
-LindaTupleItem::LindaTupleItem(std::string value) : m_type(LindaTupleItemType::String), m_stringValue(value)
+LindaTupleItem::LindaTupleItem(std::string value) : m_type(LindaTupleItemType::String), m_sValue(value)
 {
 
 }
@@ -34,19 +34,19 @@ LindaTupleItemType LindaTupleItem::GetType()
 int LindaTupleItem::GetIntegerValue()
 {
     this->GuardTypeEquals(LindaTupleItemType::Integer);
-    return this->m_integerValue;
+    return this->m_iValue;
 }
 
 float LindaTupleItem::GetFloatValue()
 {
     this->GuardTypeEquals(LindaTupleItemType::Float);
-    return this->m_floatValue;
+    return this->m_fValue;
 }
 
 std::string LindaTupleItem::GetStringValue()
 {
     this->GuardTypeEquals(LindaTupleItemType::String);
-    return this->m_stringValue;
+    return this->m_sValue;
 }
 
 void LindaTupleItem::GuardTypeEquals(LindaTupleItemType lindaTupleItemType)

@@ -19,7 +19,7 @@ public:
     bool IsMatch(LindaTupleItem &lindaTupleItem);
 private:
     LindaTupleItemType m_type;
-    std::string m_value;
+    std::string m_sValue;
 };
 
 
