@@ -6,7 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/IPC/LindaTuplePool.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemTemplate.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemType.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleTemplate.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuplesFileEntry.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemTemplate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.cpp" isTestSource="false" />
@@ -14,13 +14,23 @@
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleTemplate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItem.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleTemplate.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Exception/LindaTuplePoolConnectionError.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemType.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/InvalidOperation.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Exception/LindaTuplePoolConnectionError.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/UnknownLindaTupleType.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/LindaFileCorrupt.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/FileOperationError.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/ErrorCodeMessageExceptionBase.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/UnknownLindaTupleType.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/LindaTupleMaxSizeExceeded.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/LockingError.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Exception/InvalidOperation.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/LindaTuplePoolConnectionError.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/LindaFileCorrupt.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/ErrorCodeMessageExceptionBase.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/LockingError.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/LindaTuplePoolConnectionError.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/FileOperationError.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Exception/LindaTupleMaxSizeExceeded.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

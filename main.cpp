@@ -30,7 +30,11 @@ int main()
     catch (LindaTuplePoolConnectionError ex)
     {
         std::cout << ex.GetMessage() << " " << ex.GetErrorCode() << std::endl;
+        return 1;
     }
+
+    pool.Output(lt3);
+    pool.Output(lt1);
 
     return 0;
 }

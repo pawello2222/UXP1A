@@ -9,6 +9,7 @@
 #include <string>
 #include "../Model/LindaTuple.h"
 #include "../Model/LindaTupleTemplate.h"
+#include "../Model/LindaTuplesFileEntry.h"
 
 class LindaTuplePool
 {
@@ -22,9 +23,12 @@ public:
     void Output(LindaTuple& tuple);
 private:
     void GuardPoolConnected();
+    void FindAndLockUnusedEntry();
+    LindaTuplesFileEntry CreateTupleFileEntry(LindaTuple &tuple);
     int m_iTuplesFd;
     int m_iWaitingQueueFd;
     bool m_bIsConnected;
+    static const int TupleFileEntryTakenFlagMask;
 };
 
 
