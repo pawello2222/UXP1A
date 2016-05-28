@@ -13,10 +13,18 @@
 class LindaTuplePool
 {
 public:
-    LindaTuplePool(std::string tuplesFilePath, std::string waitingQueueFilePath);
+    LindaTuplePool();
+    ~LindaTuplePool();
+    void ConnectPool(std::string tuplesFilePath, std::string waitingQueueFilePath);
+    void DisconnectPool();
     LindaTuple Read(LindaTupleTemplate& tupleTemplate, int timeout);
     LindaTuple Input(LindaTupleTemplate& tupleTemplate, int timeout);
     void Output(LindaTuple& tuple);
+private:
+    void GuardPoolConnected();
+    int m_iTuplesFd;
+    int m_iWaitingQueueFd;
+    bool m_bIsConnected;
 };
 
 

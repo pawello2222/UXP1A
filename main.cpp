@@ -6,6 +6,8 @@
 #include "Model/LindaTupleItem.h"
 #include "Model/LindaTuple.h"
 #include "Model/LindaTupleTemplate.h"
+#include "IPC/LindaTuplePool.h"
+#include "Exception/LindaTuplePoolConnectionError.h"
 
 using namespace std;
 
@@ -18,6 +20,17 @@ int main()
     std::cout << "Expected 1, got: " << tt.IsMatch(lt1) << std::endl;
     std::cout << "Expected 0, got: " <<tt.IsMatch(lt2) << std::endl;
     std::cout << "Expected 0, got: " <<tt.IsMatch(lt3) << std::endl;
+
+    LindaTuplePool pool;
+
+    try
+    {
+        pool.ConnectPool("/tmp/tuples", "/tmp/queue");
+    }
+    catch (LindaTuplePoolConnectionError ex)
+    {
+        std::cout << ex.GetMessage() << " " << ex.GetErrorCode() << std::endl;
+    }
 
     return 0;
 }
