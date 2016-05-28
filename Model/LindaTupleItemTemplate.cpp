@@ -57,9 +57,9 @@ bool LindaTupleItemTemplate::compareFloat( float f )
     switch( this->m_operator )
     {
         case lt:
-            return stoi( this->m_sValue ) > f;
+            return stof( this->m_sValue ) > f;
         case gt:
-            return stoi( this->m_sValue ) < f;
+            return stof( this->m_sValue ) < f;
         default:
             throw UnknownLindaTupleOperator();
     }
