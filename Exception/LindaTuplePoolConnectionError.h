@@ -8,16 +8,12 @@
 
 #include <exception>
 #include <string>
+#include "ErrorCodeMessageExceptionBase.h"
 
-class LindaTuplePoolConnectionError : public std::exception
+class LindaTuplePoolConnectionError : public ErrorCodeMessageExceptionBase
 {
 public:
     LindaTuplePoolConnectionError(std::string message, int errorCode);
-    std::string GetMessage();
-    int GetErrorCode();
-private:
-    std::string m_sMessage;
-    int m_iErrorCode;
 };
 
 

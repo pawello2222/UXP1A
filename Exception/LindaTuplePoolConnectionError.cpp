@@ -4,21 +4,7 @@
 
 #include "LindaTuplePoolConnectionError.h"
 
-LindaTuplePoolConnectionError::LindaTuplePoolConnectionError(std::string message, int errorCode) : m_sMessage(message), m_iErrorCode(errorCode)
+LindaTuplePoolConnectionError::LindaTuplePoolConnectionError(std::string message, int errorCode) : ErrorCodeMessageExceptionBase(message, errorCode)
 {
 
 }
-
-std::string LindaTuplePoolConnectionError::GetMessage()
-{
-    return this->m_sMessage;
-}
-
-int LindaTuplePoolConnectionError::GetErrorCode()
-{
-    return this->m_iErrorCode;
-}
-
-
-
-
