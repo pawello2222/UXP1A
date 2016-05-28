@@ -7,8 +7,8 @@
 
 struct LindaTuplesFileEntry
 {
-    int Flags;
-    char TupleData[252];
+    char Flags;
+    char TupleData[255];
 };
 
 #endif //UXP1A_LINDATUPLESFILEENTRY_H
