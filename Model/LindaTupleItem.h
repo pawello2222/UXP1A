@@ -27,9 +27,9 @@ public:
 private:
     void GuardTypeEquals(LindaTupleItemType lindaTupleItemType);
     LindaTupleItemType m_type;
-    int m_integerValue;
-    float m_floatValue;
-    std::string m_stringValue;
+    int m_iValue;
+    float m_fValue;
+    std::string m_sValue;
 };
 
 

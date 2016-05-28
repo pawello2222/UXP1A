@@ -5,7 +5,7 @@
 #include "LindaTupleItemTemplate.h"
 #include "../Exception/UnknownLindaTupleType.h"
 
-LindaTupleItemTemplate::LindaTupleItemTemplate(LindaTupleItemType type, std::string value) : m_type(type), m_value(value)
+LindaTupleItemTemplate::LindaTupleItemTemplate(LindaTupleItemType type, std::string value) : m_type(type), m_sValue(value)
 {
 
 }
@@ -17,7 +17,7 @@ LindaTupleItemType LindaTupleItemTemplate::GetType()
 
 std::string LindaTupleItemTemplate::GetValue()
 {
-    return this->m_value;
+    return this->m_sValue;
 }
 
 bool LindaTupleItemTemplate::IsMatch(LindaTupleItem &lindaTupleItem)
@@ -27,7 +27,7 @@ bool LindaTupleItemTemplate::IsMatch(LindaTupleItem &lindaTupleItem)
         return false;
     }
 
-    if (this->m_value == "*")
+    if (this->m_sValue == "*")
     {
         return true;
     }
@@ -35,11 +35,11 @@ bool LindaTupleItemTemplate::IsMatch(LindaTupleItem &lindaTupleItem)
     switch (this->m_type)
     {
         case LindaTupleItemType::Float:
-            return stof(this->m_value) == lindaTupleItem.GetFloatValue();
+            return stof(this->m_sValue) == lindaTupleItem.GetFloatValue();
         case LindaTupleItemType::Integer:
-            return stoi(this->m_value) == lindaTupleItem.GetIntegerValue();
+            return stoi(this->m_sValue) == lindaTupleItem.GetIntegerValue();
         case LindaTupleItemType::String:
-            return this->m_value == lindaTupleItem.GetStringValue();
+            return this->m_sValue == lindaTupleItem.GetStringValue();
         default:
             throw UnknownLindaTupleType();
     }
