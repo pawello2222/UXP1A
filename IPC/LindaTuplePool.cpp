@@ -11,6 +11,7 @@
 #include "../Exception/FileOperationError.h"
 #include <fcntl.h>
 #include <unistd.h>
+#include <cerrno>
 #include <cstring>
 
 const char LindaTuplePool::TupleFileEntryTakenFlagMask = 0b00000001;
