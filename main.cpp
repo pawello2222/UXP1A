@@ -14,12 +14,17 @@ using namespace std;
 int main()
 {
     LindaTuple lt1 = LindaTuple({LindaTupleItem(123)});
-    LindaTuple lt2 = LindaTuple({LindaTupleItem(124)});
-    LindaTuple lt3 = LindaTuple({LindaTupleItem("123")});
-    LindaTupleTemplate tt = LindaTupleTemplate({LindaTupleItemTemplate(LindaTupleItemType::Integer, "123")});
-    std::cout << "Expected 1, got: " << tt.IsMatch(lt1) << std::endl;
-    std::cout << "Expected 0, got: " <<tt.IsMatch(lt2) << std::endl;
-    std::cout << "Expected 0, got: " <<tt.IsMatch(lt3) << std::endl;
+    LindaTuple lt2 = LindaTuple({LindaTupleItem(123), LindaTupleItem("123")});
+    LindaTuple lt3 = LindaTuple({LindaTupleItem(124), LindaTupleItem("124")});
+    LindaTupleTemplate tt = LindaTupleTemplate({LindaTupleItemTemplate(LindaTupleItemType::Integer, LindaTupleItemOperator::ge, "123"),
+                                                LindaTupleItemTemplate(LindaTupleItemType::String, LindaTupleItemOperator::gt, "123")});
+
+    //tt.IsMatch(lt1);
+    //tt.IsMatch(lt2);
+    //tt.IsMatch(lt1);
+    std::cout << "Expected 0, got: " << tt.IsMatch(lt1) << std::endl;
+    std::cout << "Expected 0, got: " << tt.IsMatch(lt2) << std::endl;
+    std::cout << "Expected 1, got: " << tt.IsMatch(lt3) << std::endl;
 
     LindaTuplePool pool;
 
