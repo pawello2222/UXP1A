@@ -13,7 +13,9 @@
 #include <unistd.h>
 #include <cstring>
 
-const int LindaTuplePool::TupleFileEntryTakenFlagMask = 0b00000001;
+const char LindaTuplePool::TupleFileEntryTakenFlagMask = 0b00000001;
+
+const char LindaTuplePool::TupleFileEntryTupleDataEnd = '\x00';
 
 LindaTuplePool::LindaTuplePool() : m_bIsConnected(false)
 {
@@ -59,13 +61,18 @@ void LindaTuplePool::DisconnectPool()
 LindaTuple LindaTuplePool::Read(LindaTupleTemplate& tupleTemplate, int timeout)
 {
     this->GuardPoolConnected();
-    //TODO
+    LindaTuple tuple = this->ReadAndLock(tupleTemplate, timeout);
+    this->UnlockCurrentTupleEntry();
+    return tuple;
 }
 
 LindaTuple LindaTuplePool::Input(LindaTupleTemplate& tupleTemplate, int timeout)
 {
     this->GuardPoolConnected();
-    //TODO
+    LindaTuple tuple = this->ReadAndLock(tupleTemplate, timeout);
+    this->RemoveEntryTakenFlag();
+    this->UnlockCurrentTupleEntry();
+    return tuple;
 }
 
 void LindaTuplePool::Output(LindaTuple &tuple)
@@ -75,6 +82,7 @@ void LindaTuplePool::Output(LindaTuple &tuple)
     this->FindAndLockUnusedEntry();
 
     write(this->m_iTuplesFd, reinterpret_cast<char*>(&entry), sizeof(entry));
+    //TODO Wake process that is waiting for such a tuple
 }
 
 void LindaTuplePool::GuardPoolConnected()
@@ -97,7 +105,7 @@ LindaTuplesFileEntry LindaTuplePool::CreateTupleFileEntry(LindaTuple &tuple)
     }
 
     strcpy(entry.TupleData, tupleString.c_str());
-    entry.TupleData[tupleString.size()] = '\x00';
+    entry.TupleData[tupleString.size()] = this->TupleFileEntryTupleDataEnd;
 
     return entry;
 }
@@ -111,7 +119,7 @@ void LindaTuplePool::FindAndLockUnusedEntry()
     do
     {
         //Lock tuple file entry
-        if (lockf(this->m_iTuplesFd, F_LOCK, sizeof(LindaTuplesFileEntry)) != 0)
+        if (this->LockCurrentTupleEntry() != 0)
         {
             throw LockingError("Couldn't set lock on tuple entry.", errno);
         }
@@ -120,9 +128,12 @@ void LindaTuplePool::FindAndLockUnusedEntry()
         ssize_t result = read(this->m_iTuplesFd, &fileEntry, sizeof(fileEntry));
         if (result == -1)
         {
-            lockf(this->m_iTuplesFd, F_ULOCK, sizeof(LindaTuplesFileEntry));
+            this->UnlockCurrentTupleEntry();
             throw FileOperationError("Error reading tuple from file.", errno);
         }
+
+        //Seek back to beginning of tuple
+        lseek(this->m_iTuplesFd, -result, SEEK_CUR);
 
         ssize_t bytesRead = result;
         if (bytesRead == 0)
@@ -133,17 +144,110 @@ void LindaTuplePool::FindAndLockUnusedEntry()
         if (bytesRead != sizeof(fileEntry))
         {
             //This should not happen
-            lockf(this->m_iTuplesFd, F_ULOCK, sizeof(LindaTuplesFileEntry));
+            this->UnlockCurrentTupleEntry();
             throw LindaFileCorrupt();
         }
-        else if ((fileEntry.Flags & this->TupleFileEntryTakenFlagMask) == 0)
+        else if ((fileEntry.Flags & this->TupleFileEntryTakenFlagMask) != this->TupleFileEntryTakenFlagMask)
         {
-            //Seek back to beginning of tuple file entry
-            lseek(this->m_iTuplesFd, -result, SEEK_CUR);
             break;
         }
 
         //Remove lock
-        lockf(this->m_iTuplesFd, F_ULOCK, sizeof(LindaTuplesFileEntry));
+        this->UnlockCurrentTupleEntry();
+
+        //Seek forward to beginning of next tuple
+        lseek(this->m_iTuplesFd, sizeof(LindaTuplesFileEntry),  SEEK_CUR);
     } while(true);
 }
+
+LindaTuple LindaTuplePool::ReadAndLock(LindaTupleTemplate &tupleTemplate, int timeout)
+{
+    //Seek to file begin
+    lseek(this->m_iTuplesFd, 0, SEEK_SET);
+
+    LindaTuplesFileEntry fileEntry;
+    do
+    {
+        //Lock tuple file entry
+        if (this->LockCurrentTupleEntry() != 0)
+        {
+            throw LockingError("Couldn't set lock on tuple entry.", errno);
+        }
+
+        //Read tuple file entry
+        ssize_t result = read(this->m_iTuplesFd, &fileEntry, sizeof(fileEntry));
+        if (result == -1)
+        {
+            this->UnlockCurrentTupleEntry();
+            throw FileOperationError("Error reading tuple from file.", errno);
+        }
+
+        //Seek back to beginning of tuple
+        lseek(this->m_iTuplesFd, -result, SEEK_CUR);
+
+        ssize_t bytesRead = result;
+        if (bytesRead == 0)
+        {
+            //End of file reached
+            break;
+        }
+        if (bytesRead != sizeof(fileEntry))
+        {
+            //This should not happen
+            this->UnlockCurrentTupleEntry();
+            throw LindaFileCorrupt();
+        }
+        else if ((fileEntry.Flags & this->TupleFileEntryTakenFlagMask) == this->TupleFileEntryTakenFlagMask)
+        {
+            //Entry is taken, checking if it matches template
+            //TODO Integrate with Parser (Uncomment the following)
+            /*LindaTuple tuple(fileEntry);
+            if (tupleTemplate.IsMatch(tuple))
+            {
+                return tuple;
+            }*/
+        }
+
+        //Remove lock
+        this->UnlockCurrentTupleEntry();
+
+        //Seek forward to beginning of next tuple
+        lseek(this->m_iTuplesFd, sizeof(LindaTuplesFileEntry),  SEEK_CUR);
+    } while(true);
+
+    //TODO If not found add self to waiting queue
+    throw std::logic_error("Not implemented exception");
+}
+
+void LindaTuplePool::RemoveEntryTakenFlag()
+{
+    char mask;
+    ssize_t bytesRead = read(this->m_iTuplesFd, &mask, 1);
+    if (bytesRead != 1)
+    {
+        throw FileOperationError("Cannot read the linda tuple file entry flag.", errno);
+    }
+
+    lseek(this->m_iTuplesFd, -1, SEEK_CUR);
+
+    mask = mask & ~this->TupleFileEntryTakenFlagMask;
+    ssize_t bytesWritten = write(this->m_iTuplesFd, &mask, 1);
+    if (bytesWritten != 1)
+    {
+        throw FileOperationError("Cannot write the linda tuple file entry flag.", errno);
+    }
+
+    lseek(this->m_iTuplesFd, -1, SEEK_CUR);
+}
+
+int LindaTuplePool::UnlockCurrentTupleEntry()
+{
+    return lockf(this->m_iTuplesFd, F_ULOCK, sizeof(LindaTuplesFileEntry));
+}
+
+int LindaTuplePool::LockCurrentTupleEntry()
+{
+    return lockf(this->m_iTuplesFd, F_LOCK, sizeof(LindaTuplesFileEntry));
+}
+
+

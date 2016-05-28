@@ -24,11 +24,16 @@ public:
 private:
     void GuardPoolConnected();
     void FindAndLockUnusedEntry();
+    LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate, int timeout);
     LindaTuplesFileEntry CreateTupleFileEntry(LindaTuple &tuple);
+    void RemoveEntryTakenFlag();
+    int LockCurrentTupleEntry();
+    int UnlockCurrentTupleEntry();
     int m_iTuplesFd;
     int m_iWaitingQueueFd;
     bool m_bIsConnected;
-    static const int TupleFileEntryTakenFlagMask;
+    static const char TupleFileEntryTakenFlagMask;
+    static const char TupleFileEntryTupleDataEnd;
 };
 
 
