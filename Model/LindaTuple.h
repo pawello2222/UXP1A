@@ -15,6 +15,7 @@ public:
     LindaTuple() = delete;
     LindaTuple(std::vector<LindaTupleItem> lindaTupleItems);
     std::vector<LindaTupleItem>& GetItems();
+    std::string ToString();
 private:
     std::vector<LindaTupleItem> m_lindaTupleItems;
 };

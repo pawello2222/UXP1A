@@ -24,6 +24,7 @@ public:
     int GetIntegerValue();
     float GetFloatValue();
     std::string GetStringValue();
+    std::string FormatValueAsFileEntryData();
 private:
     void GuardTypeEquals(LindaTupleItemType lindaTupleItemType);
     LindaTupleItemType m_type;

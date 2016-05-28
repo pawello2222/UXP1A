@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemTemplate.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemType.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuplesFileEntry.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItemTemplate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTuple.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Model/LindaTupleItem.cpp" isTestSource="false" />
