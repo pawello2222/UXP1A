@@ -8,6 +8,7 @@
 #include "Model/LindaTupleTemplate.h"
 #include "IPC/LindaTuplePool.h"
 #include "Exception/LindaTuplePoolConnectionError.h"
+#include "ExpressionParser/Parser.h"
 
 using namespace std;
 
@@ -18,6 +19,13 @@ int main()
     LindaTuple lt3 = LindaTuple({LindaTupleItem(124), LindaTupleItem("124")});
     LindaTupleTemplate tt = LindaTupleTemplate({LindaTupleItemTemplate(LindaTupleItemType::Integer, LindaTupleItemOperator::ge, "123"),
                                                 LindaTupleItemTemplate(LindaTupleItemType::String, LindaTupleItemOperator::gt, "123")});
+
+
+    char arr[255];
+    LindaTuplesFileEntry entry;
+    strcpy(entry.TupleData, "(1.13, \"123\", 3)");
+    Parser parser(entry);
+    auto tuple = parser.parse();
 
     //tt.IsMatch(lt1);
     //tt.IsMatch(lt2);

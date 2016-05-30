@@ -15,7 +15,7 @@ class Real: public Token {
  public:
 
 
-  Real(float value) : Token(Tag::Float, value(value) { }
+  Real(float value) : Token(Tag::Float), value(value) { }
   float getValue() const {
     return value;
   }

@@ -2,10 +2,12 @@
 // Created by Kacper Harasim on 08.05.2016.
 //
 
+#include <iostream>
 #include "Lexer.h"
 #include "Word.h"
 #include "Number.h"
 #include "Real.h"
+#include "Identifier.h"
 
 char Lexer::readCharFromInput() {
   if (inputIterator == input.end()) {
@@ -17,6 +19,7 @@ char Lexer::readCharFromInput() {
 }
 
 void Lexer::readChar() {
+  std::cout << "Reading char\n";
   peek = readCharFromInput();
 }
 
@@ -31,7 +34,7 @@ Lexer::Lexer(std::string input): input(input)  {
 std::shared_ptr<Token> Lexer::scan() {
   while (true) {
     readChar();
-    if (peek == '\n' || peek == '\t') {
+    if (peek == ' ' || peek == '\t') {
       continue;
     }
     else { break; }
@@ -46,7 +49,7 @@ std::shared_ptr<Token> Lexer::scan() {
   else if (peek == ',') {
     return std::make_shared<Word>(",", Tag::Comma);
   }
-  if (isdigit(peek)) {
+  else if (isdigit(peek)) {
     int value = 0;
     do {
       value = 10 * value + peek - '0';
@@ -69,14 +72,18 @@ std::shared_ptr<Token> Lexer::scan() {
     }
     return std::make_shared<Real>(doubleValue);
   }
-
-    if (peek == '\"') {
-      while (true) {
-        std::string buffer;
+    else if (peek == '\"') {
+    std::string buffer;
+    while (true) {
         readChar();
-        if (peek == '\"') { return std::make_shared<String>()}
+        if (peek == '\"') { return std::make_shared<Identifier>(buffer); }
+        buffer += peek;
       }
     }
-
+    if (peek == '\0') {
+      return std::make_shared<Token>(Tag::END_OF_INPUT);
+    }
+  else {
+    //TODO:: Throw exception
   }
 }

@@ -7,7 +7,7 @@
 
 
 enum struct Tag {
-  OpenBracket, EndBracket, Comma, Integer, Float, String
+  OpenBracket, EndBracket, Comma, Integer, Float, String, END_OF_INPUT
 };
 
 #endif //UXP1A_TAG_H
