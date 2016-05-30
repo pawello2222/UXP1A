@@ -10,12 +10,14 @@
 #include "../Exception/LindaFileCorrupt.h"
 #include "../Exception/FileOperationError.h"
 #include "../ExpressionParser/Parser.h"
+#include "../Model/LindaWaitingQueueFileEntry.h"
+#include "SemaphoreManager.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <cerrno>
 #include <cstring>
 
-const char LindaTuplePool::TupleFileEntryTakenFlagMask = 0b00000001;
+const char LindaTuplePool::FileEntryTakenFlagMask = 0b00000001;
 
 const char LindaTuplePool::TupleFileEntryTupleDataEnd = '\x00';
 
@@ -72,7 +74,7 @@ LindaTuple LindaTuplePool::Input(LindaTupleTemplate& tupleTemplate, int timeout)
 {
     this->GuardPoolConnected();
     LindaTuple tuple = this->ReadAndLock(tupleTemplate, timeout);
-    this->RemoveEntryTakenFlag();
+    this->RemoveEntryTakenFlag(this->m_iTuplesFd);
     this->UnlockCurrentTupleEntry();
     return tuple;
 }
@@ -84,7 +86,8 @@ void LindaTuplePool::Output(LindaTuple &tuple)
     this->FindAndLockUnusedEntry();
 
     write(this->m_iTuplesFd, reinterpret_cast<char*>(&entry), sizeof(entry));
-    //TODO Wake process that is waiting for such a tuple
+    //TODO: Maybe unlock?
+    NotifyProcessesWaitingForTuple(tuple);
 }
 
 void LindaTuplePool::GuardPoolConnected()
@@ -149,7 +152,7 @@ void LindaTuplePool::FindAndLockUnusedEntry()
             this->UnlockCurrentTupleEntry();
             throw LindaFileCorrupt();
         }
-        else if ((fileEntry.Flags & this->TupleFileEntryTakenFlagMask) != this->TupleFileEntryTakenFlagMask)
+        else if ((fileEntry.Flags & this->FileEntryTakenFlagMask) != this->FileEntryTakenFlagMask)
         {
             break;
         }
@@ -199,10 +202,9 @@ LindaTuple LindaTuplePool::ReadAndLock(LindaTupleTemplate &tupleTemplate, int ti
             this->UnlockCurrentTupleEntry();
             throw LindaFileCorrupt();
         }
-        else if ((fileEntry.Flags & this->TupleFileEntryTakenFlagMask) == this->TupleFileEntryTakenFlagMask)
+        else if ((fileEntry.Flags & this->FileEntryTakenFlagMask) == this->FileEntryTakenFlagMask)
         {
             //Entry is taken, checking if it matches template
-            //TODO Integrate with Parser (Uncomment the following)
             Parser parser(fileEntry);
             LindaTuple tuple = parser.parse();
             if (tupleTemplate.IsMatch(tuple))
@@ -218,29 +220,29 @@ LindaTuple LindaTuplePool::ReadAndLock(LindaTupleTemplate &tupleTemplate, int ti
         lseek(this->m_iTuplesFd, sizeof(LindaTuplesFileEntry),  SEEK_CUR);
     } while(true);
 
-    //TODO If not found add self to waiting queue
-    throw std::logic_error("Not implemented exception");
+    //Wait for template until someone will insert it.
+    return AddToWaitingQueueForTemplate(tupleTemplate);
 }
 
-void LindaTuplePool::RemoveEntryTakenFlag()
+void LindaTuplePool::RemoveEntryTakenFlag(int fileDescriptor)
 {
     char mask;
-    ssize_t bytesRead = read(this->m_iTuplesFd, &mask, 1);
+    ssize_t bytesRead = read(fileDescriptor, &mask, 1);
     if (bytesRead != 1)
     {
         throw FileOperationError("Cannot read the linda tuple file entry flag.", errno);
     }
 
-    lseek(this->m_iTuplesFd, -1, SEEK_CUR);
+    lseek(fileDescriptor, -1, SEEK_CUR);
 
-    mask = mask & ~this->TupleFileEntryTakenFlagMask;
-    ssize_t bytesWritten = write(this->m_iTuplesFd, &mask, 1);
+    mask = mask & ~this->FileEntryTakenFlagMask;
+    ssize_t bytesWritten = write(fileDescriptor, &mask, 1);
     if (bytesWritten != 1)
     {
         throw FileOperationError("Cannot write the linda tuple file entry flag.", errno);
     }
 
-    lseek(this->m_iTuplesFd, -1, SEEK_CUR);
+    lseek(fileDescriptor, -1, SEEK_CUR);
 }
 
 int LindaTuplePool::UnlockCurrentTupleEntry()
@@ -253,4 +255,134 @@ int LindaTuplePool::LockCurrentTupleEntry()
     return lockf(this->m_iTuplesFd, F_LOCK, sizeof(LindaTuplesFileEntry));
 }
 
+
+//QUEUE operation sections
+int LindaTuplePool::UnlockCurrentQueueEntry() {
+    return lockf(this->m_iWaitingQueueFd, F_ULOCK, sizeof(LindaWaitingQueueFileEntry));
+}
+
+int LindaTuplePool::LockCurrentQueueEntry() {
+    return lockf(this->m_iWaitingQueueFd, F_LOCK, sizeof(LindaWaitingQueueFileEntry));
+}
+
+
+
+//TODO: Methods reading and sharing entries should get refactor - Kacper
+
+
+LindaWaitingQueueFileEntry LindaTuplePool::CreateWaitingQueueEntry(LindaTupleTemplate &tuple) {
+    //TODO: Create this method
+    throw "not implemented yet";
+}
+
+//Blocking operation
+LindaTuple LindaTuplePool::AddToWaitingQueueForTemplate(LindaTupleTemplate &tupleTemplate) {
+    //Seek to file begin
+    lseek(this->m_iTuplesFd, 0, SEEK_SET);
+
+    LindaWaitingQueueFileEntry fileEntry;
+    do
+    {
+        //Lock tuple file entry
+        if (this->LockCurrentQueueEntry() != 0)
+        {
+            throw LockingError("Couldn't set lock on tuple entry.", errno);
+        }
+
+        //Read tuple file entry
+        ssize_t result = read(this->m_iWaitingQueueFd, &fileEntry, sizeof(fileEntry));
+        if (result == -1)
+        {
+            this->UnlockCurrentTupleEntry();
+            throw FileOperationError("Error reading tuple from file.", errno);
+        }
+
+        //Seek back to beginning of tuple
+        lseek(this->m_iWaitingQueueFd, -result, SEEK_CUR);
+
+        ssize_t bytesRead = result;
+        if (bytesRead == 0)
+        {
+            //End of file reached
+            break;
+        }
+        if (bytesRead != sizeof(fileEntry))
+        {
+            //This should not happen
+            this->UnlockCurrentTupleEntry();
+            throw LindaFileCorrupt();
+        }
+        else if ((fileEntry.Flags & this->FileEntryTakenFlagMask) != this->FileEntryTakenFlagMask)
+        {
+            break;
+        }
+
+        //Remove lock
+        this->UnlockCurrentTupleEntry();
+
+        //Seek forward to beginning of next tuple
+        lseek(this->m_iTuplesFd, sizeof(LindaTuplesFileEntry),  SEEK_CUR);
+    } while(true);
+    LindaWaitingQueueFileEntry entry = CreateWaitingQueueEntry(tupleTemplate);
+    write(this->m_iTuplesFd, reinterpret_cast<char*>(&entry), sizeof(entry));
+    UnlockCurrentQueueEntry();
+
+}
+
+int LindaTuplePool::NotifyProcessesWaitingForTuple(LindaTuple &tuple) {
+    int notifiedProcessesCount = 0;
+    lseek(this->m_iWaitingQueueFd, 0, SEEK_SET);
+    LindaWaitingQueueFileEntry fileEntry;
+    do
+    {
+        //Lock tuple file entry
+        if (this->LockCurrentQueueEntry()!= 0)
+        {
+            throw LockingError("Couldn't set lock on queue entry.", errno);
+        }
+
+        //Read tuple file entry
+        ssize_t result = read(this->m_iWaitingQueueFd, &fileEntry, sizeof(fileEntry));
+        if (result == -1)
+        {
+            this->UnlockCurrentQueueEntry();
+            throw FileOperationError("Error reading queue entry from file.", errno);
+        }
+
+        //Seek back to beginning of tuple
+        lseek(this->m_iWaitingQueueFd, -result, SEEK_CUR);
+
+        ssize_t bytesRead = result;
+        if (bytesRead == 0)
+        {
+            //End of file reached
+            break;
+        }
+        if (bytesRead != sizeof(fileEntry))
+        {
+            //This should not happen
+            this->UnlockCurrentQueueEntry();
+            throw LindaFileCorrupt();
+        }
+        else if ((fileEntry.Flags & this->FileEntryTakenFlagMask) == this->FileEntryTakenFlagMask)
+        {
+            //Entry is taken, checking if it matches template
+            //TODO: Parse template from file entry.
+            /*
+            if (tupleTemplate.IsMatch(tuple))
+            {
+            SemaphoreManager::UnlockSemaphoreWithProcessId(fileEntry.processId);
+            this->RemoveEntryTakenFlag(this->m_iWaitingQueueFd);
+            }
+            */
+            throw "Unimplemented yet";
+        }
+
+        //Remove lock
+        this->UnlockCurrentQueueEntry();
+
+        //Seek forward to beginning of next tuple
+        lseek(this->m_iWaitingQueueFd, sizeof(LindaWaitingQueueFileEntry),  SEEK_CUR);
+    } while(true);
+}
 

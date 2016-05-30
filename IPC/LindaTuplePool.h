@@ -10,6 +10,7 @@
 #include "../Model/LindaTuple.h"
 #include "../Model/LindaTupleTemplate.h"
 #include "../Model/LindaTuplesFileEntry.h"
+#include "../Model/LindaWaitingQueueFileEntry.h"
 
 class LindaTuplePool
 {
@@ -27,14 +28,21 @@ private:
     void FindAndLockUnusedEntry();
     LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate, int timeout);
     LindaTuplesFileEntry CreateTupleFileEntry(LindaTuple &tuple);
-    void RemoveEntryTakenFlag();
+
+    void RemoveEntryTakenFlag(int fileDescriptor);
     int LockCurrentTupleEntry();
     int UnlockCurrentTupleEntry();
+    int LockCurrentQueueEntry();
+    int UnlockCurrentQueueEntry();
 
-  int m_iTuplesFd;
+    LindaWaitingQueueFileEntry CreateWaitingQueueEntry(LindaTupleTemplate &tuple);
+    LindaTuple AddToWaitingQueueForTemplate(LindaTupleTemplate& tupleTemplate);
+    int NotifyProcessesWaitingForTuple(LindaTuple& tuple);
+
+    int m_iTuplesFd;
     int m_iWaitingQueueFd;
     bool m_bIsConnected;
-    static const char TupleFileEntryTakenFlagMask;
+    static const char FileEntryTakenFlagMask;
     static const char TupleFileEntryTupleDataEnd;
 };
 

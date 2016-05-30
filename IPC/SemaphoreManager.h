@@ -7,15 +7,16 @@
 
 
 #include <string>
+#include <semaphore.h>
 class SemaphoreManager {
 
  private:
   static std::string semaphoreIdentifierForProcessWithId(int id);
-  sem_t *getSemaphore(std::string identifier);
+  static sem_t *getSemaphore(std::string identifier);
 
  public:
-  void LockOnSemaphore();
-  void UnlockSemaphoreWithProcessId(int id);
+  static void LockOnSemaphore();
+  static void UnlockSemaphoreWithProcessId(int id);
 };
 
 

@@ -13,7 +13,7 @@ void Parser::syntaxException(std::string message) {
 }
 
 LindaTuple Parser::parse() {
-  Lexer lexer(entry.TupleData);
+  Lexer lexer(entry);
   auto firstToken = lexer.scan();
   if (firstToken->tag != Tag::OpenBracket) {
     syntaxException("Tuple should begin with '('");
