@@ -309,7 +309,7 @@ LindaTuple LindaTuplePool::AddToWaitingQueueForTemplate(LindaTupleTemplate &tupl
         if (bytesRead != sizeof(fileEntry))
         {
             //This should not happen
-            this->UnlockCurrentTupleEntry();
+            this->UnlockCurrentQueueEntry();
             throw LindaFileCorrupt();
         }
         else if ((fileEntry.Flags & this->FileEntryTakenFlagMask) != this->FileEntryTakenFlagMask)
@@ -318,7 +318,7 @@ LindaTuple LindaTuplePool::AddToWaitingQueueForTemplate(LindaTupleTemplate &tupl
         }
 
         //Remove lock
-        this->UnlockCurrentTupleEntry();
+        this->UnlockCurrentQueueEntry();
 
         //Seek forward to beginning of next tuple
         lseek(this->m_iTuplesFd, sizeof(LindaTuplesFileEntry),  SEEK_CUR);
