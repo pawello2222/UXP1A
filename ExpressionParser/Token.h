@@ -6,8 +6,13 @@
 #define UXP1A_TOKEN_H
 
 
+#include "Tag.h"
 class Token {
 
+ public:
+  Tag tag;
+
+  Token(Tag tag): tag(tag) {}
 };
 
 
