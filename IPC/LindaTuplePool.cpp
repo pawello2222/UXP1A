@@ -9,6 +9,7 @@
 #include "../Exception/LockingError.h"
 #include "../Exception/LindaFileCorrupt.h"
 #include "../Exception/FileOperationError.h"
+#include "../ExpressionParser/Parser.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <cerrno>
@@ -202,11 +203,12 @@ LindaTuple LindaTuplePool::ReadAndLock(LindaTupleTemplate &tupleTemplate, int ti
         {
             //Entry is taken, checking if it matches template
             //TODO Integrate with Parser (Uncomment the following)
-            /*LindaTuple tuple(fileEntry);
+            Parser parser(fileEntry);
+            LindaTuple tuple = parser.parse();
             if (tupleTemplate.IsMatch(tuple))
             {
                 return tuple;
-            }*/
+            }
         }
 
         //Remove lock

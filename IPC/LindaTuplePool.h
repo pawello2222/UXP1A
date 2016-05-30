@@ -22,6 +22,7 @@ public:
     LindaTuple Input(LindaTupleTemplate& tupleTemplate, int timeout);
     void Output(LindaTuple& tuple);
 private:
+
     void GuardPoolConnected();
     void FindAndLockUnusedEntry();
     LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate, int timeout);
@@ -29,7 +30,8 @@ private:
     void RemoveEntryTakenFlag();
     int LockCurrentTupleEntry();
     int UnlockCurrentTupleEntry();
-    int m_iTuplesFd;
+
+  int m_iTuplesFd;
     int m_iWaitingQueueFd;
     bool m_bIsConnected;
     static const char TupleFileEntryTakenFlagMask;
