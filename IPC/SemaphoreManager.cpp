@@ -23,12 +23,12 @@ sem_t* SemaphoreManager::getSemaphore(std::string identifier) {
 void SemaphoreManager::LockOnSemaphore() {
   int pid = getpid();
   auto semId = semaphoreIdentifierForProcessWithId(pid);
-  sem_t mutex = getSemaphore(semId);
+  sem_t* mutex = getSemaphore(semId);
   sem_wait(mutex);
 }
 
 void SemaphoreManager::UnlockSemaphoreWithProcessId(int id) {
-  auto semId = semaphoreIdentifierForProcessWithId(pid);
-  sem_t mutex = getSemaphore(semId);
+  auto semId = semaphoreIdentifierForProcessWithId(id);
+  sem_t* mutex = getSemaphore(semId);
   sem_post(mutex);
 }
