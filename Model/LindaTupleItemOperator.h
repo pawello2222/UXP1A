@@ -7,6 +7,7 @@
 
 enum LindaTupleItemOperator
 {
+    all,
     lt,
     le,
     eq,

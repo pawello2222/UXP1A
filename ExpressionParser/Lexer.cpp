@@ -55,6 +55,23 @@ std::shared_ptr<Token> Lexer::scan() {
   else if (peek == '*') {
     return std::make_shared<Token>(Tag::Star);
   }
+  else if (peek == '=') {
+    readChar();
+    if (peek != '=') { unrecognizedTokenException("= should be followed by another ="); }
+    return std::make_shared<Token>(Tag::Equals);
+  }
+  else if (peek == '<') {
+    readChar();
+    if (peek == '=') { return std::make_shared<Token>(Tag::LessThanOrEqual); }
+    backChar();
+    return std::make_shared<Token>(Tag::LessThan);
+  }
+  else if (peek == '>') {
+    if (peek == '=') { return std::make_shared<Token>(Tag::GreaterThanOrEqual); }
+    backChar();
+    return std::make_shared<Token>(Tag::GreaterThan);
+  }
+
   else if (isdigit(peek)) {
     int value = 0;
     do {
@@ -99,4 +116,7 @@ std::shared_ptr<Token> Lexer::scan() {
   else {
     //TODO:: Throw exception
   }
+}
+void Lexer::unrecognizedTokenException(std::string msg) {
+  //TODO: Implement it.
 }
