@@ -7,7 +7,21 @@
 
 
 enum struct Tag {
-  OpenBracket, EndBracket, Comma, Star, Colon, Word, Integer, Float, String, END_OF_INPUT
+  OpenBracket,
+  EndBracket,
+  Comma,
+  Star,
+  Colon,
+  Word,
+  Equals,
+  LessThan,
+  LessThanOrEqual,
+  GreaterThan,
+  GreaterThanOrEqual,
+  Integer,
+  Float,
+  String,
+  END_OF_INPUT
 };
 
 #endif //UXP1A_TAG_H

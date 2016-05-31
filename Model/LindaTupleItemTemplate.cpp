@@ -34,12 +34,9 @@ bool LindaTupleItemTemplate::IsMatch( LindaTupleItem& lindaTupleItem )
         return false;
     }
 
-    if ( this->m_sValue == "*" )
-    {
-        return true;
-    }
+    if (this->m_operator == LindaTupleItemOperator::all) { return true; }
 
-    switch ( this->m_type )
+        switch ( this->m_type )
     {
         case LindaTupleItemType::Float:
             return compareFloat( lindaTupleItem.GetFloatValue() );

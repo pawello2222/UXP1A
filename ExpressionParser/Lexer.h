@@ -17,6 +17,7 @@ class Lexer {
   char readCharFromInput();
   void readChar();
   void backChar();
+  void unrecognizedTokenException(std::string msg);
 
  public:
   Lexer(std::string input);

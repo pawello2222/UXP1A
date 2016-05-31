@@ -7,7 +7,6 @@
 #ifndef UXP1A_WORD_H
 #define UXP1A_WORD_H
 
-#endif //UXP1A_WORD_H
 
 
 class Word: public Token {
@@ -22,3 +21,5 @@ class Word: public Token {
     return lexeme;
   }
 };
+
+#endif //UXP1A_WORD_H
