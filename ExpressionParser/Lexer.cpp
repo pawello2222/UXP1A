@@ -106,6 +106,7 @@ std::shared_ptr<Token> Lexer::scan() {
     else if (isalpha(peek)) {
     std::string buffer;
     while (true) {
+      buffer += peek;
       readChar();
       if (!isalpha(peek)) { backChar(); return std::make_shared<Word>(buffer); }
     }
