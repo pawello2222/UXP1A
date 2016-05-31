@@ -9,6 +9,7 @@
 #include "IPC/LindaTuplePool.h"
 #include "Exception/LindaTuplePoolConnectionError.h"
 #include "ExpressionParser/LindaTupleParser.h"
+#include "ExpressionParser/LindaTemplateParser.h"
 
 using namespace std;
 
@@ -26,6 +27,12 @@ int main()
     strcpy(entry.TupleData, "(1.13, \"123\", 3)");
     LindaTupleParser parser(entry);
     auto tuple = parser.parse();
+
+    char arr2[255];
+    LindaTuplesFileEntry entry2;
+    strcpy(entry2.TupleData, "(integer:==3)");
+    LindaTemplateParser templateParser(entry2);
+    auto templateParsed = templateParser.parse();
 
     //tt.IsMatch(lt1);
     //tt.IsMatch(lt2);
