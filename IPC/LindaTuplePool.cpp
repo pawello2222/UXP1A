@@ -9,7 +9,7 @@
 #include "../Exception/LockingError.h"
 #include "../Exception/LindaFileCorrupt.h"
 #include "../Exception/FileOperationError.h"
-#include "../ExpressionParser/Parser.h"
+#include "../ExpressionParser/LindaTupleParser.h"
 #include "../Model/LindaWaitingQueueFileEntry.h"
 #include "SemaphoreManager.h"
 #include <fcntl.h>
@@ -205,7 +205,7 @@ LindaTuple LindaTuplePool::ReadAndLock(LindaTupleTemplate &tupleTemplate, int ti
         else if ((fileEntry.Flags & this->FileEntryTakenFlagMask) == this->FileEntryTakenFlagMask)
         {
             //Entry is taken, checking if it matches template
-            Parser parser(fileEntry);
+            LindaTupleParser parser(fileEntry);
             LindaTuple tuple = parser.parse();
             if (tupleTemplate.IsMatch(tuple))
             {

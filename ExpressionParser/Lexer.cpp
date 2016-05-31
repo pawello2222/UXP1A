@@ -4,10 +4,10 @@
 
 #include <iostream>
 #include "Lexer.h"
-#include "Word.h"
 #include "Number.h"
 #include "Real.h"
 #include "Identifier.h"
+#include "Word.h"
 
 char Lexer::readCharFromInput() {
   if (inputIterator == input.end()) {
@@ -41,13 +41,19 @@ std::shared_ptr<Token> Lexer::scan() {
   }
 
   if (peek == '(') {
-    return std::make_shared<Word>("(", Tag::OpenBracket);
+    return std::make_shared<Token>(Tag::OpenBracket);
   }
   else if (peek == ')') {
-    return std::make_shared<Word>(")", Tag::EndBracket);
+    return std::make_shared<Token>(Tag::EndBracket);
   }
   else if (peek == ',') {
-    return std::make_shared<Word>(",", Tag::Comma);
+    return std::make_shared<Token>(Tag::Comma);
+  }
+  else if (peek == ':') {
+    return std::make_shared<Token>(Tag::Colon);
+  }
+  else if (peek == '*') {
+    return std::make_shared<Token>(Tag::Star);
   }
   else if (isdigit(peek)) {
     int value = 0;
@@ -80,6 +86,13 @@ std::shared_ptr<Token> Lexer::scan() {
         buffer += peek;
       }
     }
+    else if (isalpha(peek)) {
+    std::string buffer;
+    while (true) {
+      readChar();
+      if (!isalpha(peek)) { backChar(); return std::make_shared<Word>(buffer); }
+    }
+  }
     if (peek == '\0') {
       return std::make_shared<Token>(Tag::END_OF_INPUT);
     }

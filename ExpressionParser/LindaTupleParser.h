@@ -13,15 +13,15 @@
 #include "../Model/LindaTuple.h"
 #include "Lexer.h"
 #include "../Model/LindaWaitingQueueFileEntry.h"
-class Parser {
+class LindaTupleParser {
  private:
   std::string entry;
   std::pair<std::vector<LindaTupleItem>, std::shared_ptr<Token>> parseItems(Lexer& lexer);
   void syntaxException(std::string message);
  public:
 
-  Parser(const LindaTuplesFileEntry &entry) : entry(entry.TupleData) { }
-  Parser(const LindaWaitingQueueFileEntry &entry): entry(entry.TupleData) {}
+  LindaTupleParser(const LindaTuplesFileEntry &entry) : entry(entry.TupleData) { }
+  LindaTupleParser(const LindaWaitingQueueFileEntry &entry): entry(entry.TupleData) {}
   LindaTuple parse();
 };
 

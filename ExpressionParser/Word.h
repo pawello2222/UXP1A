@@ -16,7 +16,7 @@ class Word: public Token {
 
  public:
 
-  Word(const std::string &lexeme, Tag tag) : Token(tag), lexeme(lexeme) { }
+  Word(const std::string &lexeme) : Token(Tag::Word), lexeme(lexeme) { }
 
   const std::string &getLexeme() const {
     return lexeme;

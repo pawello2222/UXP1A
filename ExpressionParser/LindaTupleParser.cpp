@@ -2,17 +2,17 @@
 // Created by Kacper Harasim on 08.05.2016.
 //
 
-#include "Parser.h"
+#include "LindaTupleParser.h"
 #include "Lexer.h"
 #include "Real.h"
 #include "Number.h"
 #include "Identifier.h"
 
-void Parser::syntaxException(std::string message) {
+void LindaTupleParser::syntaxException(std::string message) {
 
 }
 
-LindaTuple Parser::parse() {
+LindaTuple LindaTupleParser::parse() {
   Lexer lexer(entry);
   auto firstToken = lexer.scan();
   if (firstToken->tag != Tag::OpenBracket) {
@@ -31,7 +31,7 @@ LindaTuple Parser::parse() {
   return LindaTuple(itemsWithLeftover.first);
 }
 
-std::pair<std::vector<LindaTupleItem>, std::shared_ptr<Token>> Parser::parseItems(Lexer& lexer) {
+std::pair<std::vector<LindaTupleItem>, std::shared_ptr<Token>> LindaTupleParser::parseItems(Lexer& lexer) {
 
   std::vector<LindaTupleItem> recognizedItems;
   while (true) {
