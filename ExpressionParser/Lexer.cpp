@@ -8,12 +8,13 @@
 #include "Real.h"
 #include "Identifier.h"
 #include "Word.h"
+#include "../Exception/UnrecognizedCharacter.h"
 
 char Lexer::readCharFromInput() {
-  if (inputIterator == input.end()) {
+  if (inputIterator == input.size()) {
     //TODO: Throw exception
   }
-  char c =  *inputIterator;
+  char c =  input[inputIterator];
   inputIterator++;
   return c;
 }
@@ -28,7 +29,7 @@ void Lexer::backChar() {
 }
 
 Lexer::Lexer(std::string input): input(input)  {
-  inputIterator = input.begin();
+  inputIterator = 0;
 }
 
 std::shared_ptr<Token> Lexer::scan() {
@@ -67,6 +68,7 @@ std::shared_ptr<Token> Lexer::scan() {
     return std::make_shared<Token>(Tag::LessThan);
   }
   else if (peek == '>') {
+    readChar();
     if (peek == '=') { return std::make_shared<Token>(Tag::GreaterThanOrEqual); }
     backChar();
     return std::make_shared<Token>(Tag::GreaterThan);
@@ -115,9 +117,9 @@ std::shared_ptr<Token> Lexer::scan() {
       return std::make_shared<Token>(Tag::END_OF_INPUT);
     }
   else {
-    //TODO:: Throw exception
+      std::string peekInString(1, peek);
+      throw UnrecognizedCharacter("Unrecognized token found: " + peekInString, -1);
   }
 }
 void Lexer::unrecognizedTokenException(std::string msg) {
-  //TODO: Implement it.
 }
