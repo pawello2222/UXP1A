@@ -22,15 +22,15 @@ int main()
                                                 LindaTupleItemTemplate(LindaTupleItemType::String, LindaTupleItemOperator::gt, "123")});
 
 
-    char arr[255];
-    LindaTuplesFileEntry entry;
-    strcpy(entry.TupleData, "(1.13, \"123\", 3)");
-    LindaTupleParser parser(entry);
-    auto tuple = parser.parse();
+//    char arr[255];
+//    LindaTuplesFileEntry entry;
+//    strcpy(entry.TupleData, "(1.13, \"123\", 3)");
+//    LindaTupleParser parser(entry);
+//    auto tuple = parser.parse();
 
     char arr2[255];
     LindaTuplesFileEntry entry2;
-    strcpy(entry2.TupleData, "(integer:==3)");
+    strcpy(entry2.TupleData, "(integer:== 3,string: *,float: >=3.14)");
     LindaTemplateParser templateParser(entry2);
     auto templateParsed = templateParser.parse();
 

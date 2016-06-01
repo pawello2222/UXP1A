@@ -12,7 +12,7 @@ class Lexer {
 
  private:
   char peek = ' ';
-  std::string::iterator inputIterator;
+  int inputIterator;
   std::string input;
   char readCharFromInput();
   void readChar();
