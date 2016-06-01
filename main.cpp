@@ -10,6 +10,8 @@
 #include "Exception/LindaTuplePoolConnectionError.h"
 #include "ExpressionParser/LindaTupleParser.h"
 #include "ExpressionParser/LindaTemplateParser.h"
+#include "Exception/UnknownLindaTupleOperator.h"
+#include "Exception/UnknownLindaTupleType.h"
 
 using namespace std;
 
@@ -17,8 +19,8 @@ int main()
 {
     LindaTuple lt1 = LindaTuple({LindaTupleItem(123)});
     LindaTuple lt2 = LindaTuple({LindaTupleItem(123), LindaTupleItem("123")});
-    LindaTuple lt3 = LindaTuple({LindaTupleItem(124), LindaTupleItem("124")});
-    LindaTupleTemplate tt = LindaTupleTemplate({LindaTupleItemTemplate(LindaTupleItemType::Integer, LindaTupleItemOperator::ge, "123"),
+    LindaTuple lt3 = LindaTuple({LindaTupleItem((float)123), LindaTupleItem("124")});
+    LindaTupleTemplate tt = LindaTupleTemplate({LindaTupleItemTemplate(LindaTupleItemType::Float, LindaTupleItemOperator::ge, "123"),
                                                 LindaTupleItemTemplate(LindaTupleItemType::String, LindaTupleItemOperator::gt, "123")});
 
 
@@ -37,9 +39,21 @@ int main()
     //tt.IsMatch(lt1);
     //tt.IsMatch(lt2);
     //tt.IsMatch(lt1);
-    std::cout << "Expected 0, got: " << tt.IsMatch(lt1) << std::endl;
-    std::cout << "Expected 0, got: " << tt.IsMatch(lt2) << std::endl;
-    std::cout << "Expected 1, got: " << tt.IsMatch(lt3) << std::endl;
+    try
+    {
+        std::cout << "Expected 0, got: " << tt.IsMatch(lt1) << std::endl;
+        std::cout << "Expected 0, got: " << tt.IsMatch(lt2) << std::endl;
+        std::cout << "Expected 1, got: " << tt.IsMatch(lt3) << std::endl;
+    }
+    catch ( UnknownLindaTupleType& e )
+    {
+        std::cout << "Error: Invalid tuple type" << std::endl;
+    }
+    catch ( UnknownLindaTupleOperator& e )
+    {
+        std::cout << "Error: Invalid tuple operator" << std::endl;
+    }
+
 
     LindaTuplePool pool;
 

@@ -8,7 +8,7 @@
 
 #include <string>
 
-class ErrorCodeMessageExceptionBase
+class ErrorCodeMessageExceptionBase : public std::exception
 {
 public:
     ErrorCodeMessageExceptionBase(std::string message, int errorCode);
