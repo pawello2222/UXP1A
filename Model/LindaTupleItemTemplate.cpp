@@ -30,13 +30,12 @@ std::string LindaTupleItemTemplate::GetValue()
 bool LindaTupleItemTemplate::IsMatch( LindaTupleItem& lindaTupleItem )
 {
     if ( this->m_type != lindaTupleItem.GetType() )
-    {
         return false;
-    }
 
-    if (this->m_operator == LindaTupleItemOperator::all) { return true; }
+    if ( this->m_operator == LindaTupleItemOperator::all )
+        return true;
 
-        switch ( this->m_type )
+    switch ( this->m_type )
     {
         case LindaTupleItemType::Float:
             return compareFloat( lindaTupleItem.GetFloatValue() );
