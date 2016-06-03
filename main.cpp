@@ -6,7 +6,7 @@
 #include "Model/LindaTupleItem.h"
 #include "Model/LindaTuple.h"
 #include "IPC/LindaTuplePool.h"
-#include "ExpressionParser/Parser.h"
+#include "ExpressionParser/LindaTupleParser.h"
 
 void display_help()
 {
@@ -52,7 +52,7 @@ int main()
             std::string tupleString;
             std::cout << "Tuple: ";
             std::cin >> tupleString;
-            Parser parser(tupleString);
+            LindaTupleParser parser(tupleString);
             LindaTuple tuple = parser.parse();
             pool.Output(tuple);
         }
