@@ -16,7 +16,7 @@ std::vector<LindaTupleItem>& LindaTuple::GetItems()
 
 std::string LindaTuple::ToString()
 {
-    std::string delimiter = ", ";
+    std::string delimiter = ",";
     std::string str = "(";
     for (auto itemIt = this->m_lindaTupleItems.begin(); itemIt != this->m_lindaTupleItems.end(); ++itemIt)
     {
