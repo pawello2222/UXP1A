@@ -3,73 +3,72 @@
 //
 
 #include <iostream>
-#include <cstring>
 #include "Model/LindaTupleItem.h"
 #include "Model/LindaTuple.h"
-#include "Model/LindaTupleTemplate.h"
 #include "IPC/LindaTuplePool.h"
-#include "Exception/LindaTuplePoolConnectionError.h"
 #include "ExpressionParser/LindaTupleParser.h"
-#include "ExpressionParser/LindaTemplateParser.h"
-#include "Exception/UnknownLindaTupleOperator.h"
-#include "Exception/UnknownLindaTupleType.h"
 
-using namespace std;
+void display_help()
+{
+    std::cout << "connect: connects to the pool" << std::endl;
+    std::cout << "disconnect: disconnects from the pool" << std::endl;
+    std::cout << "input: read tuple and remove it from pool" << std::endl;
+    std::cout << "read: read tuple without removing it from pool" << std::endl;
+    std::cout << "output: add tuple to pool" << std::endl;
+    std::cout << "exit: exit program" << std::endl;
+}
+
 
 int main()
 {
-    LindaTuple lt1 = LindaTuple({LindaTupleItem(123)});
-    LindaTuple lt2 = LindaTuple({LindaTupleItem(123), LindaTupleItem("123")});
-    LindaTuple lt3 = LindaTuple({LindaTupleItem((float)123), LindaTupleItem("124")});
-    LindaTupleTemplate tt = LindaTupleTemplate({LindaTupleItemTemplate(LindaTupleItemType::Float, LindaTupleItemOperator::ge, "123"),
-                                                LindaTupleItemTemplate(LindaTupleItemType::String, LindaTupleItemOperator::gt, "123")});
-
-
-//    char arr[255];
-//    LindaTuplesFileEntry entry;
-//    strcpy(entry.TupleData, "(1.13, \"123\", 3)");
-//    LindaTupleParser parser(entry);
-//    auto tuple = parser.parse();
-
-    char arr2[255];
-    LindaTuplesFileEntry entry2;
-    strcpy(entry2.TupleData, "(integer:== 3,string: *,float: >=3.14)");
-    LindaTemplateParser templateParser(entry2);
-    auto templateParsed = templateParser.parse();
-
-    //tt.IsMatch(lt1);
-    //tt.IsMatch(lt2);
-    //tt.IsMatch(lt1);
-    try
-    {
-        std::cout << "Expected 0, got: " << tt.IsMatch(lt1) << std::endl;
-        std::cout << "Expected 0, got: " << tt.IsMatch(lt2) << std::endl;
-        std::cout << "Expected 1, got: " << tt.IsMatch(lt3) << std::endl;
-    }
-    catch ( UnknownLindaTupleType& e )
-    {
-        std::cout << "Error: Invalid tuple type" << std::endl;
-    }
-    catch ( UnknownLindaTupleOperator& e )
-    {
-        std::cout << "Error: Invalid tuple operator" << std::endl;
-    }
-
-
     LindaTuplePool pool;
 
-    try
-    {
-        pool.ConnectPool("/tmp/tuples", "/tmp/queue");
-    }
-    catch (LindaTuplePoolConnectionError ex)
-    {
-        std::cout << ex.GetMessage() << " " << ex.GetErrorCode() << std::endl;
-        return 1;
-    }
+    display_help();
 
-    pool.Output(lt3);
-    pool.Output(lt1);
+    while(true)
+    {
+        std::string command;
+        std::cin >> command;
+        if (command == "connect")
+        {
+            std::string tuplesFilePath, waitingQueueFilePath;
+            std::cout << "Tuples file path: ";
+            std::cin >> tuplesFilePath;
+            std::cout << "Waiting queue file path: ";
+            std::cin >> waitingQueueFilePath;
+            pool.ConnectPool(tuplesFilePath, waitingQueueFilePath);
+        }
+        else if (command == "disconnect")
+        {
+            pool.DisconnectPool();
+        }
+        else if (command == "input")
+        {
+            //TODO
+        }
+        else if (command == "output")
+        {
+
+            std::string tupleString;
+            std::cout << "Tuple: ";
+            std::cin >> tupleString;
+            LindaTupleParser parser(tupleString);
+            LindaTuple tuple = parser.parse();
+            pool.Output(tuple);
+        }
+        else if (command == "read")
+        {
+            //TODO
+        }
+        else if (command == "exit")
+        {
+            break;
+        }
+        else
+        {
+            display_help();
+        }
+    }
 
     return 0;
 }
