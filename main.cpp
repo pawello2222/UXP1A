@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <cstring>
 #include "Model/LindaTupleItem.h"
 #include "Model/LindaTuple.h"
 #include "Model/LindaTupleTemplate.h"
