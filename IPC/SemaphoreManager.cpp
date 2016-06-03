@@ -5,6 +5,7 @@
 #include <zconf.h>
 #include <semaphore.h>
 #include <cstdlib>
+#include <fcntl.h>
 #include "SemaphoreManager.h"
 
 std::string SemaphoreManager::semaphoreIdentifierForProcessWithId(int id) {
