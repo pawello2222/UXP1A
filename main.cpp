@@ -7,6 +7,7 @@
 #include "Model/LindaTuple.h"
 #include "IPC/LindaTuplePool.h"
 #include "ExpressionParser/LindaTupleParser.h"
+#include "ExpressionParser/LindaTemplateParser.h"
 
 void display_help()
 {
@@ -28,6 +29,7 @@ int main()
     while(true)
     {
         std::string command;
+        std::cout << "Enter command: ";
         std::cin >> command;
         if (command == "connect")
         {
@@ -44,7 +46,17 @@ int main()
         }
         else if (command == "input")
         {
-            //TODO
+            //TODO Add support for LindaPoolOperationTimedOutException
+            std::string tupleTemplateString;
+            int timeout;
+            std::cout << "Tuple template: ";
+            std::cin >> tupleTemplateString;
+            std::cout << "Timeout (ms): ";
+            std::cin >> timeout;
+            LindaTemplateParser parser(tupleTemplateString);
+            LindaTupleTemplate tupleTemplate = parser.parse();
+            LindaTuple tuple = pool.Input(tupleTemplate, timeout);
+            std::cout << tuple.ToString() << std::endl;
         }
         else if (command == "output")
         {
@@ -58,7 +70,17 @@ int main()
         }
         else if (command == "read")
         {
-            //TODO
+            //TODO Add support for LindaPoolOperationTimedOutException
+            std::string tupleTemplateString;
+            int timeout;
+            std::cout << "Tuple template: ";
+            std::cin >> tupleTemplateString;
+            std::cout << "Timeout (ms): ";
+            std::cin >> timeout;
+            LindaTemplateParser parser(tupleTemplateString);
+            LindaTupleTemplate tupleTemplate = parser.parse();
+            LindaTuple tuple = pool.Read(tupleTemplate, timeout);
+            std::cout << tuple.ToString() << std::endl;
         }
         else if (command == "exit")
         {

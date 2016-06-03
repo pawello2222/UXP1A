@@ -31,6 +31,7 @@ class LindaTemplateParser {
 
   LindaTemplateParser(const LindaTuplesFileEntry &entry) : entry(entry.TupleData) { }
   LindaTemplateParser(const LindaWaitingQueueFileEntry &entry): entry(entry.TupleData) {}
+  LindaTemplateParser(const std::string &lindaTemplateString): entry(lindaTemplateString) { }
   LindaTupleTemplate parse();
 };
 
