@@ -5,7 +5,7 @@
 #include "LindaTupleOperationTimedOutException.h"
 
 
-LindaTupleOperationTimedOutException::LindaTupleOperationTimedOutException(std::string message, int errorCode)
-    : ErrorCodeMessageExceptionBase(message, errorCode) {
+LindaTupleOperationTimedOutException::LindaTupleOperationTimedOutException()
+    : ErrorCodeMessageExceptionBase("No tuple has been found ", -1) {
 
 }

@@ -12,6 +12,8 @@
 #include "../ExpressionParser/LindaTupleParser.h"
 #include "../Model/LindaWaitingQueueFileEntry.h"
 #include "SemaphoreManager.h"
+#include "../ExpressionParser/LindaTemplateParser.h"
+#include "../Exception/LindaTupleOperationTimedOutException.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <cerrno>
@@ -62,7 +64,7 @@ void LindaTuplePool::DisconnectPool()
     }
 }
 
-LindaTuple LindaTuplePool::Read(LindaTupleTemplate& tupleTemplate, int timeout)
+LindaTuple LindaTuplePool::Read(LindaTupleTemplate& tupleTemplate, unsigned long timeout)
 {
     this->GuardPoolConnected();
     LindaTuple tuple = this->ReadAndLock(tupleTemplate, timeout);
@@ -70,7 +72,7 @@ LindaTuple LindaTuplePool::Read(LindaTupleTemplate& tupleTemplate, int timeout)
     return tuple;
 }
 
-LindaTuple LindaTuplePool::Input(LindaTupleTemplate& tupleTemplate, int timeout)
+LindaTuple LindaTuplePool::Input(LindaTupleTemplate& tupleTemplate, unsigned long timeout)
 {
     this->GuardPoolConnected();
     LindaTuple tuple = this->ReadAndLock(tupleTemplate, timeout);
@@ -165,7 +167,7 @@ void LindaTuplePool::FindAndLockUnusedEntry()
     } while(true);
 }
 
-LindaTuple LindaTuplePool::ReadAndLock(LindaTupleTemplate &tupleTemplate, int timeout)
+LindaTuple LindaTuplePool::ReadAndLock(LindaTupleTemplate &tupleTemplate, unsigned long timeout)
 {
     //Seek to file begin
     lseek(this->m_iTuplesFd, 0, SEEK_SET);
@@ -221,7 +223,7 @@ LindaTuple LindaTuplePool::ReadAndLock(LindaTupleTemplate &tupleTemplate, int ti
     } while(true);
 
     //Wait for template until someone will insert it.
-    return AddToWaitingQueueForTemplate(tupleTemplate);
+    return AddToWaitingQueueForTemplate(tupleTemplate, timeout);
 }
 
 void LindaTuplePool::RemoveEntryTakenFlag(int fileDescriptor)
@@ -276,7 +278,7 @@ LindaWaitingQueueFileEntry LindaTuplePool::CreateWaitingQueueEntry(LindaTupleTem
 }
 
 //Blocking operation
-LindaTuple LindaTuplePool::AddToWaitingQueueForTemplate(LindaTupleTemplate &tupleTemplate) {
+LindaTuple LindaTuplePool::AddToWaitingQueueForTemplate(LindaTupleTemplate &tupleTemplate, unsigned long timeout) {
     //Seek to file begin
     lseek(this->m_iTuplesFd, 0, SEEK_SET);
 
@@ -326,6 +328,14 @@ LindaTuple LindaTuplePool::AddToWaitingQueueForTemplate(LindaTupleTemplate &tupl
     LindaWaitingQueueFileEntry entry = CreateWaitingQueueEntry(tupleTemplate);
     write(this->m_iTuplesFd, reinterpret_cast<char*>(&entry), sizeof(entry));
     UnlockCurrentQueueEntry();
+    auto result = SemaphoreManager::LockOnSemaphoreWithTimeout(timeout);
+    if (result == -1) {
+        throw LindaTupleOperationTimedOutException();
+    }
+    else {
+        //TODO: Now we should read entry from given line.
+    }
+
 
 }
 
@@ -367,15 +377,14 @@ int LindaTuplePool::NotifyProcessesWaitingForTuple(LindaTuple &tuple) {
         else if ((fileEntry.Flags & this->FileEntryTakenFlagMask) == this->FileEntryTakenFlagMask)
         {
             //Entry is taken, checking if it matches template
-            //TODO: Parse template from file entry.
-            /*
-            if (tupleTemplate.IsMatch(tuple))
-            {
-            SemaphoreManager::UnlockSemaphoreWithProcessId(fileEntry.processId);
-            this->RemoveEntryTakenFlag(this->m_iWaitingQueueFd);
+            LindaTemplateParser templateParser(fileEntry);
+            LindaTupleTemplate lindaTupleTemplate = templateParser.parse();
+            if (lindaTupleTemplate.IsMatch(tuple)) {
+                notifiedProcessesCount++;
+                //TODO: We should let know, where this typle is
+                SemaphoreManager::UnlockSemaphoreWithProcessId(fileEntry.processId);
+                this->RemoveEntryTakenFlag(this->m_iWaitingQueueFd);
             }
-            */
-            throw "Unimplemented yet";
         }
 
         //Remove lock

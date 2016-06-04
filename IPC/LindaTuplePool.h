@@ -19,14 +19,14 @@ public:
     ~LindaTuplePool();
     void ConnectPool(std::string tuplesFilePath, std::string waitingQueueFilePath);
     void DisconnectPool();
-    LindaTuple Read(LindaTupleTemplate& tupleTemplate, int timeout);
-    LindaTuple Input(LindaTupleTemplate& tupleTemplate, int timeout);
+    LindaTuple Read(LindaTupleTemplate& tupleTemplate, unsigned long timeout);
+    LindaTuple Input(LindaTupleTemplate& tupleTemplate, unsigned long timeout);
     void Output(LindaTuple& tuple);
 private:
 
     void GuardPoolConnected();
     void FindAndLockUnusedEntry();
-    LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate, int timeout);
+    LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate, unsigned long timeout);
     LindaTuplesFileEntry CreateTupleFileEntry(LindaTuple &tuple);
 
     void RemoveEntryTakenFlag(int fileDescriptor);
@@ -36,7 +36,7 @@ private:
     int UnlockCurrentQueueEntry();
 
     LindaWaitingQueueFileEntry CreateWaitingQueueEntry(LindaTupleTemplate &tuple);
-    LindaTuple AddToWaitingQueueForTemplate(LindaTupleTemplate& tupleTemplate);
+    LindaTuple AddToWaitingQueueForTemplate(LindaTupleTemplate& tupleTemplate, unsigned long timeout);
     int NotifyProcessesWaitingForTuple(LindaTuple& tuple);
 
     int m_iTuplesFd;

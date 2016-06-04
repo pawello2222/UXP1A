@@ -10,7 +10,7 @@
 class LindaTupleOperationTimedOutException: public ErrorCodeMessageExceptionBase
 {
  public:
-  LindaTupleOperationTimedOutException(std::string message, int errorCode);
+  LindaTupleOperationTimedOutException();
 };
 
 
