@@ -8,6 +8,7 @@
 
 #include <string>
 #include <semaphore.h>
+#include <chrono>
 class SemaphoreManager {
 
  private:
@@ -15,6 +16,9 @@ class SemaphoreManager {
   static sem_t *getSemaphore(std::string identifier);
 
  public:
+
+  //Returns 0 if it was unlocked by different process, -1 if through timeout mechanism.
+  static int LockOnSemaphoreWithTimeout(unsigned long timeout);
   static void LockOnSemaphore();
   static void UnlockSemaphoreWithProcessId(int id);
 };

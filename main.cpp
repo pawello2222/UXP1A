@@ -8,6 +8,7 @@
 #include "IPC/LindaTuplePool.h"
 #include "ExpressionParser/LindaTupleParser.h"
 #include "ExpressionParser/LindaTemplateParser.h"
+#include "IPC/SemaphoreManager.h"
 
 void display_help()
 {
@@ -23,7 +24,6 @@ void display_help()
 int main()
 {
     LindaTuplePool pool;
-
     display_help();
 
     while(true)
