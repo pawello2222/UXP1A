@@ -113,7 +113,7 @@ std::shared_ptr<Token> Lexer::scan() {
       if (!isalpha(peek)) { backChar(); return std::make_shared<Word>(buffer); }
     }
   }
-    if (peek == '\0') {
+    if (peek == '\0' || peek == '\n') {
       return std::make_shared<Token>(Tag::END_OF_INPUT);
     }
   else {

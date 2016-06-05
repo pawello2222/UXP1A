@@ -7,6 +7,7 @@
 #include "Real.h"
 #include "Number.h"
 #include "Identifier.h"
+#include "../Exception/LindaTupleTemplateFormatError.h"
 
 
 LindaTupleTemplate LindaTemplateParser::parse() {
@@ -85,7 +86,7 @@ LindaTupleItemType LindaTemplateParser::typeBasedOnWord(std::shared_ptr<Word> wo
 }
 
 void LindaTemplateParser::syntaxException(std::string message) {
-
+  throw LindaTupleTemplateFormatError(message, -1);
 }
 
 LindaTupleItemOperator LindaTemplateParser::operatorBasedOnToken(std::shared_ptr<Token> token) {

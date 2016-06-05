@@ -7,9 +7,10 @@
 #include "Real.h"
 #include "Number.h"
 #include "Identifier.h"
+#include "../Exception/LindaTupleFormatError.h"
 
 void LindaTupleParser::syntaxException(std::string message) {
-
+  throw LindaTupleFormatError(message, -1);
 }
 
 LindaTuple LindaTupleParser::parse() {
