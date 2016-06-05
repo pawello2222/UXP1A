@@ -323,10 +323,11 @@ LindaTuple LindaTuplePool::AddToWaitingQueueForTemplate(LindaTupleTemplate &tupl
         this->UnlockCurrentQueueEntry();
 
         //Seek forward to beginning of next tuple
-        lseek(this->m_iTuplesFd, sizeof(LindaTuplesFileEntry),  SEEK_CUR);
+        lseek(this->m_iWaitingQueueFd, sizeof(fileEntry),  SEEK_CUR);
     } while(true);
+
     LindaWaitingQueueFileEntry entry = CreateWaitingQueueEntry(tupleTemplate);
-    write(this->m_iTuplesFd, reinterpret_cast<char*>(&entry), sizeof(entry));
+    write(this->m_iWaitingQueueFd, reinterpret_cast<char*>(&entry), sizeof(entry));
     UnlockCurrentQueueEntry();
     auto result = SemaphoreManager::LockOnSemaphoreWithTimeout(timeout);
     if (result == -1) {
