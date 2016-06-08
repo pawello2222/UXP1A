@@ -117,7 +117,7 @@ LindaTuple LindaTuplePool::Input(LindaTupleTemplate& tupleTemplate, unsigned lon
 void LindaTuplePool::Output(LindaTuple &tuple)
 {
     this->GuardPoolConnected();
-    this->m_pTuplesFileManager->FindAndLockUnusedTupleEntry();
+    this->m_pTuplesFileManager->FindAndLockUnusedFileEntry();
 
     this->m_pTuplesFileManager->WriteAndSeekBack(tuple);
     this->m_pQueueFileManager->NotifyProcessesWaitingForTuple(tuple);

@@ -16,7 +16,6 @@ class LindaTuplesFileManager : public LindaFileManagerBase<LindaTuplesFileEntry,
 {
 public:
     LindaTuplesFileManager(std::string filePath);
-    void FindAndLockUnusedTupleEntry();
     LindaTuplesFileEntry CreateFileEntry(LindaTuple &tuple);
     LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate);
 };

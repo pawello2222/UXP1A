@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include "LindaFileManagerBase.h"
 #include "../Exception/FileOperationError.h"
+#include "../Exception/LockingError.h"
+#include "../Exception/LindaFileCorrupt.h"
 
 template<typename T1, typename T2>
 LindaFileManagerBase<T1, T2>::LindaFileManagerBase(std::string filePath)
@@ -27,13 +29,11 @@ template<typename T1, typename T2>
 void LindaFileManagerBase<T1, T2>::RemoveEntryTakenFlag()
 {
     char mask;
-    ssize_t bytesRead = this->Read(&mask, 1);
+    ssize_t bytesRead = this->ReadAndSeekBack(&mask, 1);
     if (bytesRead != 1)
     {
         throw FileOperationError("Cannot read the linda tuple file entry flag.", errno);
     }
-
-    this->Seek(-1, SEEK_CUR);
 
     mask = mask & ~this->FileEntryTakenFlagMask;
     ssize_t bytesWritten = this->WriteAndSeekBack(&mask, 1);
@@ -75,9 +75,14 @@ void LindaFileManagerBase<T1, T2>::Seek(__off_t offset, int whence)
 }
 
 template<typename T1, typename T2>
-ssize_t LindaFileManagerBase<T1, T2>::Read(void *buffer, size_t bytesToRead)
+ssize_t LindaFileManagerBase<T1, T2>::ReadAndSeekBack(void *buffer, size_t bytesToRead)
 {
-    return read(this->m_iFileDescriptor, buffer, bytesToRead);
+    ssize_t bytesRead = read(this->m_iFileDescriptor, buffer, bytesToRead);
+    if (bytesRead > 0) {
+        this->Seek(-bytesRead, SEEK_CUR);
+    }
+
+    return bytesRead;
 }
 
 template<typename T1, typename T2>
@@ -87,6 +92,73 @@ ssize_t LindaFileManagerBase<T1, T2>::WriteAndSeekBack(char *buffer, size_t size
     this->Seek(-bytesWritten, SEEK_CUR);
     return bytesWritten;
 }
+
+template<typename T1, typename T2>
+bool LindaFileManagerBase<T1, T2>::FindAndLockFileEntry(std::function<bool(T1)> predicate, bool processOnlyFirstMatchingPredicate, std::function<void(T1 foundFileEntry)> onFound)
+{
+    bool found = false;
+    this->Seek(0, SEEK_SET);
+    T1 fileEntry;
+    do
+    {
+        //Lock file entry
+        if (this->LockCurrentEntry() != 0)
+        {
+            throw LockingError("Couldn't set lock on entry.", errno);
+        }
+
+        //Read file entry
+        ssize_t result = this->ReadAndSeekBack(&fileEntry, sizeof(fileEntry));
+        if (result == -1)
+        {
+            this->UnlockCurrentEntry();
+            throw FileOperationError("Error reading entry from file.", errno);
+        }
+
+        ssize_t bytesRead = result;
+        if (bytesRead == 0)
+        {
+            //End of file reached
+            break;
+        }
+        if (bytesRead != sizeof(fileEntry))
+        {
+            //This should not happen
+            this->UnlockCurrentEntry();
+            throw LindaFileCorrupt();
+        }
+        else if (predicate(fileEntry))
+        {
+            found = true;
+            onFound(fileEntry);
+            if (processOnlyFirstMatchingPredicate) {
+                break;
+            }
+        }
+
+        //Remove lock
+        this->UnlockCurrentEntry();
+
+        //Seek forward to beginning of next tuple
+        this->Seek(sizeof(fileEntry),  SEEK_CUR);
+    } while(true);
+
+    return found;
+}
+
+template<typename T1, typename T2>
+void LindaFileManagerBase<T1, T2>::FindAndLockUnusedFileEntry()
+{
+    this->FindAndLockFileEntry([this](const T1 &fileEntry)
+                                      {
+                                          return ((fileEntry.Flags & this->FileEntryTakenFlagMask) !=
+                                                  this->FileEntryTakenFlagMask);
+                                      }, true);
+}
+
+
+
+
 
 
 

@@ -121,6 +121,7 @@ std::string LindaTupleItemTemplate::FormatValueAsFileEntryData() {
     switch (this->m_operator) {
         case LindaTupleItemOperator::all:
             lindaOperator = "*";
+            value = "";
             break;
         case LindaTupleItemOperator::ge:
             lindaOperator = ">=";
