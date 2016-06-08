@@ -23,7 +23,7 @@ char Lexer::readCharFromInput() {
 }
 
 void Lexer::readChar() {
-  std::cout << "Reading char\n";
+  //std::cout << "Reading char\n";
   peek = readCharFromInput();
 }
 
