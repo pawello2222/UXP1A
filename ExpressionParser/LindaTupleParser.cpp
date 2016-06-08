@@ -56,7 +56,7 @@ std::pair<std::vector<LindaTupleItem>, std::shared_ptr<Token>> LindaTupleParser:
 
     auto next = lexer.scan();
     if (next->tag == Tag::EndBracket) {
-      return std::make_pair(recognizedItems, first);
+      return std::make_pair(recognizedItems, next);
     }
     else if (next->tag == Tag::Comma) { continue; }
     else { syntaxException("Item should be followed by either comma or end bracket"); }
