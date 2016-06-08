@@ -12,12 +12,12 @@
 #include "../Model/LindaTuple.h"
 #include "../Model/LindaTupleTemplate.h"
 
-class LindaTuplesFileManager : public LindaFileManagerBase<LindaTuplesFileEntry>
+class LindaTuplesFileManager : public LindaFileManagerBase<LindaTuplesFileEntry, LindaTuple>
 {
 public:
     LindaTuplesFileManager(std::string filePath);
     void FindAndLockUnusedTupleEntry();
-    LindaTuplesFileEntry CreateTupleFileEntry(LindaTuple &tuple);
+    LindaTuplesFileEntry CreateFileEntry(LindaTuple &tuple);
     LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate);
 };
 

@@ -66,7 +66,7 @@ void LindaTuplesFileManager::FindAndLockUnusedTupleEntry()
     } while(true);
 }
 
-LindaTuplesFileEntry LindaTuplesFileManager::CreateTupleFileEntry(LindaTuple &tuple)
+LindaTuplesFileEntry LindaTuplesFileManager::CreateFileEntry(LindaTuple &tuple)
 {
     LindaTuplesFileEntry entry;
     entry.Flags = FileEntryTakenFlagMask;

@@ -5,7 +5,6 @@
 #include "LindaTuplePool.h"
 #include "../Exception/LindaTuplePoolConnectionError.h"
 #include "../Exception/InvalidOperation.h"
-#include "../Exception/FileOperationError.h"
 #include "SemaphoreManager.h"
 #include "../Exception/LindaPoolOperationTimedOutException.h"
 #include "../Exception/NoLindaTupleMatchingTemplateException.h"
@@ -118,10 +117,9 @@ LindaTuple LindaTuplePool::Input(LindaTupleTemplate& tupleTemplate, unsigned lon
 void LindaTuplePool::Output(LindaTuple &tuple)
 {
     this->GuardPoolConnected();
-    LindaTuplesFileEntry entry = this->m_pTuplesFileManager->CreateTupleFileEntry(tuple);
     this->m_pTuplesFileManager->FindAndLockUnusedTupleEntry();
 
-    this->m_pTuplesFileManager->WriteAndSeekBack(entry);
+    this->m_pTuplesFileManager->WriteAndSeekBack(tuple);
     this->m_pQueueFileManager->NotifyProcessesWaitingForTuple(tuple);
     this->m_pTuplesFileManager->UnlockCurrentEntry();
 }

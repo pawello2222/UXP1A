@@ -10,14 +10,15 @@
 #include "../Model/LindaTupleTemplate.h"
 #include "../Model/LindaWaitingQueueFileEntry.h"
 
-class LindaQueueFileManager : public LindaFileManagerBase<LindaWaitingQueueFileEntry>
+class LindaQueueFileManager : public LindaFileManagerBase<LindaWaitingQueueFileEntry, LindaTupleTemplate>
 {
 public:
     LindaQueueFileManager(std::string filePath);
-    LindaWaitingQueueFileEntry CreateWaitingQueueEntry(LindaTupleTemplate &tupleTemplate);
     void AddMeToWaitingQueueForTemplate(LindaTupleTemplate& tupleTemplate);
     void RemoveMeFromWaitingQueue();
     int NotifyProcessesWaitingForTuple(LindaTuple& tuple);
+private:
+    LindaWaitingQueueFileEntry CreateFileEntry(LindaTupleTemplate &tupleTemplate);
 };
 
 

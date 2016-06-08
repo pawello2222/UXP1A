@@ -9,8 +9,6 @@
 #include <string>
 #include "../Model/LindaTuple.h"
 #include "../Model/LindaTupleTemplate.h"
-#include "../Model/LindaTuplesFileEntry.h"
-#include "../Model/LindaWaitingQueueFileEntry.h"
 #include "LindaTuplesFileManager.h"
 #include "LindaQueueFileManager.h"
 

@@ -17,7 +17,7 @@ LindaQueueFileManager::LindaQueueFileManager(std::string filePath) : LindaFileMa
 
 }
 
-LindaWaitingQueueFileEntry LindaQueueFileManager::CreateWaitingQueueEntry(LindaTupleTemplate &tupleTemplate)
+LindaWaitingQueueFileEntry LindaQueueFileManager::CreateFileEntry(LindaTupleTemplate &tupleTemplate)
 {
     LindaWaitingQueueFileEntry entry;
     entry.processId = getpid();
@@ -84,8 +84,7 @@ void LindaQueueFileManager::AddMeToWaitingQueueForTemplate(LindaTupleTemplate &t
         this->Seek(sizeof(fileEntry),  SEEK_CUR);
     } while(true);
 
-    LindaWaitingQueueFileEntry entry = CreateWaitingQueueEntry(tupleTemplate);
-    this->WriteAndSeekBack(entry);
+    this->WriteAndSeekBack(tupleTemplate);
     this->UnlockCurrentEntry();
 }
 
