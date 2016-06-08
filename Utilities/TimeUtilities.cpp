@@ -7,7 +7,7 @@
 #include "TimeUtilities.h"
 
 
-struct timespec TimeUtilities::addTimespecs(struct timespec time1, struct timespec time2, struct timespec& result)
+void TimeUtilities::addTimespecs(struct timespec time1, struct timespec time2, struct timespec& result)
 {
 /* Add the two times together. */
 

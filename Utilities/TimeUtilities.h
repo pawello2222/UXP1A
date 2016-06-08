@@ -9,7 +9,7 @@
 class TimeUtilities {
 
  public:
-  static struct timespec addTimespecs (struct timespec a, struct timespec b, struct timespec& result);
+  static void addTimespecs(struct timespec a, struct timespec b, struct timespec& result);
   static void millisecondsToTimespec(struct timespec *ts, unsigned long ms);
   static struct timeval getCurrentTime();
   static long calculateDifferenceBetweenTimesInMilliseconds(struct timeval a, struct timeval b);
