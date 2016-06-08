@@ -88,8 +88,8 @@ void LindaTuplePool::Output(LindaTuple &tuple)
     this->FindAndLockUnusedEntry();
 
     write(this->m_iTuplesFd, reinterpret_cast<char*>(&entry), sizeof(entry));
-    //TODO: Maybe unlock?
     NotifyProcessesWaitingForTuple(tuple);
+    this->UnlockCurrentTupleEntry();
 }
 
 void LindaTuplePool::GuardPoolConnected()
@@ -367,6 +367,7 @@ int LindaTuplePool::NotifyProcessesWaitingForTuple(LindaTuple &tuple) {
         if (bytesRead == 0)
         {
             //End of file reached
+            this->UnlockCurrentQueueEntry();
             break;
         }
         if (bytesRead != sizeof(fileEntry))
