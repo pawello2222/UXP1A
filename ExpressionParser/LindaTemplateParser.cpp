@@ -65,7 +65,7 @@ std::pair<std::vector<LindaTupleItemTemplate>, std::shared_ptr<Token>> LindaTemp
     }
     auto next = lexer.scan();
     if (next->tag == Tag::EndBracket) {
-      return std::make_pair(recognizedItems, first);
+      return std::make_pair(recognizedItems, next);
     }
     else if (next->tag == Tag::Comma) { continue; }
   }
