@@ -103,20 +103,42 @@ std::string LindaTupleItemTemplate::FormatValueAsFileEntryData() {
     std::string stringValue;
     std::string value;
     switch (this->m_type) {
-        case LindaTupleItemType::Float: stringValue = "float"; value = this->m_sValue;
-        case LindaTupleItemType::Integer: stringValue = "integer"; value = this->m_sValue;
-        case LindaTupleItemType::String: stringValue = "string"; value = "\"" + this->m_sValue + "\"";
+        case LindaTupleItemType::Float:
+            stringValue = "float";
+            value = this->m_sValue;
+            break;
+        case LindaTupleItemType::Integer:
+            stringValue = "integer";
+            value = this->m_sValue;
+            break;
+        case LindaTupleItemType::String:
+            stringValue = "string";
+            value = "\"" + this->m_sValue + "\"";
+            break;
     }
     stringValue += ":";
     std::string lindaOperator;
     switch (this->m_operator) {
-        case LindaTupleItemOperator::all: stringValue += "*"; return stringValue;
-        case LindaTupleItemOperator::ge: lindaOperator = ">=";
-        case LindaTupleItemOperator::eq: lindaOperator = "==";
-        case LindaTupleItemOperator::gt: lindaOperator = ">";
-        case LindaTupleItemOperator::le : lindaOperator = "<=";
-        case LindaTupleItemOperator::lt: lindaOperator = "<";
+        case LindaTupleItemOperator::all:
+            lindaOperator = "*";
+            break;
+        case LindaTupleItemOperator::ge:
+            lindaOperator = ">=";
+            break;
+        case LindaTupleItemOperator::eq:
+            lindaOperator = "==";
+            break;
+        case LindaTupleItemOperator::gt:
+            lindaOperator = ">";
+            break;
+        case LindaTupleItemOperator::le:
+            lindaOperator = "<=";
+            break;
+        case LindaTupleItemOperator::lt:
+            lindaOperator = "<";
+            break;
     }
+    stringValue += lindaOperator;
     stringValue += value;
     return stringValue;
 }
