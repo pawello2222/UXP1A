@@ -25,6 +25,9 @@ LindaWaitingQueueFileEntry LindaQueueFileManager::CreateFileEntry(LindaTupleTemp
         throw LindaTupleMaxSizeExceeded();
     }
 
+#ifndef NDEBUG
+    memset(entry.TupleTemplateData, 0x00, sizeof(entry.TupleTemplateData));
+#endif
     strcpy(entry.TupleTemplateData, tupleTemplateString.c_str());
     entry.TupleTemplateData[tupleTemplateString.size()] = this->TupleFileEntryTupleDataEnd;
 

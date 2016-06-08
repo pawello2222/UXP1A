@@ -27,6 +27,9 @@ LindaTuplesFileEntry LindaTuplesFileManager::CreateFileEntry(LindaTuple &tuple)
         throw LindaTupleMaxSizeExceeded();
     }
 
+#ifndef NDEBUG
+    memset(entry.TupleData, 0x00, sizeof(entry.TupleData));
+#endif
     strcpy(entry.TupleData, tupleString.c_str());
     entry.TupleData[tupleString.size()] = this->TupleFileEntryTupleDataEnd;
 
