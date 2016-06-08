@@ -71,7 +71,6 @@ LindaTuple LindaTuplePool::ReadInputInternal(LindaTupleTemplate &tupleTemplate, 
     this->GuardPoolConnected();
     this->AddMeToWaitingQueueForTemplate(tupleTemplate);
     try {
-        //TODO Make sure everywhere unlocks
         LindaTuple tuple = this->ReadAndLock(tupleTemplate);
         if (removeTuple) {
             this->RemoveEntryTakenFlag(this->m_iTuplesFd);
