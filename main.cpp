@@ -47,7 +47,6 @@ int main()
         }
         else if (command == "input")
         {
-            //TODO Add support for LindaPoolOperationTimedOutException
             std::string tupleTemplateString;
             unsigned long timeout;
             std::cout << "Tuple template: ";
@@ -78,7 +77,6 @@ int main()
         }
         else if (command == "read")
         {
-            //TODO Add support for LindaPoolOperationTimedOutException
             std::string tupleTemplateString;
             unsigned long timeout;
             std::cout << "Tuple template: ";
@@ -87,6 +85,7 @@ int main()
             std::cin >> timeout;
             LindaTemplateParser parser(tupleTemplateString);
             LindaTupleTemplate tupleTemplate = parser.parse();
+
             try {
                 LindaTuple tuple = pool.Read(tupleTemplate, timeout);
                 std::cout << tuple.ToString() << std::endl;
