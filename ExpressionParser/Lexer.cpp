@@ -9,13 +9,16 @@
 #include "Identifier.h"
 #include "Word.h"
 #include "../Exception/UnrecognizedCharacter.h"
+#include "../Exception/UnrecognizedToken.h"
 
 char Lexer::readCharFromInput() {
+  char c;
   if (inputIterator == input.size()) {
-    //TODO: Throw exception
+    c = '\0';
+  } else {
+    c =  input[inputIterator];
+    inputIterator++;
   }
-  char c =  input[inputIterator];
-  inputIterator++;
   return c;
 }
 
@@ -122,5 +125,5 @@ std::shared_ptr<Token> Lexer::scan() {
   }
 }
 void Lexer::unrecognizedTokenException(std::string msg) {
-  //TODO Implement
+  throw UnrecognizedToken(msg, -1);
 }

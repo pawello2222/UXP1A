@@ -8,6 +8,7 @@
 #include "Number.h"
 #include "Identifier.h"
 #include "../Exception/LindaTupleTemplateFormatError.h"
+#include "../Exception/UnknownLindaTemplateValue.h"
 
 
 LindaTupleTemplate LindaTemplateParser::parse() {
@@ -141,6 +142,6 @@ std::string LindaTemplateParser::convertedStringValueForToken(std::shared_ptr<To
   }
   else {
     //TODO: Should probably throw exception
-    return "";
+    throw UnknownLindaTemplateValue("Value shoud be integer, string or float");
   }
 }
