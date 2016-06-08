@@ -3,7 +3,6 @@
 //
 
 #include "LindaTemplateParser.h"
-#include "Word.h"
 #include "Real.h"
 #include "Number.h"
 #include "Identifier.h"

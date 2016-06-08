@@ -5,7 +5,6 @@
 #include <iostream>
 #include "LindaTupleItem.h"
 #include "../Exception/InvalidOperation.h"
-#include "../Exception/UnknownLindaTupleType.h"
 
 LindaTupleItem::LindaTupleItem(int value) : m_type(LindaTupleItemType::Integer), m_iValue(value)
 {

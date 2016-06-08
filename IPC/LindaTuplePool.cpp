@@ -17,7 +17,6 @@
 #include "../Utilities/TimeUtilities.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include <cerrno>
 #include <cstring>
 #include <iostream>
 

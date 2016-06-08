@@ -3,7 +3,6 @@
 //
 
 #include "LindaTupleParser.h"
-#include "Lexer.h"
 #include "Real.h"
 #include "Number.h"
 #include "Identifier.h"
