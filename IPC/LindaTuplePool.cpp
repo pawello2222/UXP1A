@@ -385,7 +385,7 @@ int LindaTuplePool::NotifyProcessesWaitingForTuple(LindaTuple &tuple) {
                 notifiedProcessesCount++;
                 //TODO: We should let know, where this tuple is
                 SemaphoreManager::UnlockSemaphoreWithProcessId(fileEntry.processId);
-                this->RemoveEntryTakenFlag(this->m_iWaitingQueueFd);
+                //this->RemoveEntryTakenFlag(this->m_iWaitingQueueFd);
             }
         }
 
