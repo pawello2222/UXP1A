@@ -11,6 +11,8 @@
 #include "../Model/LindaTupleTemplate.h"
 #include "../Model/LindaTuplesFileEntry.h"
 #include "../Model/LindaWaitingQueueFileEntry.h"
+#include "LindaTuplesFileManager.h"
+#include "LindaQueueFileManager.h"
 
 class LindaTuplePool
 {
@@ -25,27 +27,11 @@ public:
 private:
     LindaTuple ReadInputInternal(LindaTupleTemplate& tupleTemplate, unsigned long timeout, bool removeTuple);
     void GuardPoolConnected();
-    void FindAndLockUnusedTupleEntry();
-    LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate);
-    LindaTuplesFileEntry CreateTupleFileEntry(LindaTuple &tuple);
 
-    void RemoveEntryTakenFlag(int fileDescriptor);
-    int LockCurrentTupleEntry();
-    int UnlockCurrentTupleEntry();
-    int LockCurrentQueueEntry();
-    int UnlockCurrentQueueEntry();
-    ssize_t WriteAndSeekBack(int fileDescriptor, char* buffer, size_t size);
-
-    LindaWaitingQueueFileEntry CreateWaitingQueueEntry(LindaTupleTemplate &tuple);
-    void AddMeToWaitingQueueForTemplate(LindaTupleTemplate& tupleTemplate);
-    void RemoveMeFromWaitingQueue();
-    int NotifyProcessesWaitingForTuple(LindaTuple& tuple);
-
-    int m_iTuplesFd;
-    int m_iWaitingQueueFd;
+    std::unique_ptr<LindaTuplesFileManager> m_pTuplesFileManager;
+    std::unique_ptr<LindaQueueFileManager> m_pQueueFileManager;
     bool m_bIsConnected;
-    static const char FileEntryTakenFlagMask;
-    static const char TupleFileEntryTupleDataEnd;
+
 };
 
 
