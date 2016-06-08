@@ -48,7 +48,7 @@ int main()
         {
             //TODO Add support for LindaPoolOperationTimedOutException
             std::string tupleTemplateString;
-            int timeout;
+            unsigned long timeout;
             std::cout << "Tuple template: ";
             std::cin >> tupleTemplateString;
             std::cout << "Timeout (ms): ";
@@ -72,7 +72,7 @@ int main()
         {
             //TODO Add support for LindaPoolOperationTimedOutException
             std::string tupleTemplateString;
-            int timeout;
+            unsigned long timeout;
             std::cout << "Tuple template: ";
             std::cin >> tupleTemplateString;
             std::cout << "Timeout (ms): ";

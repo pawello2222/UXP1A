@@ -21,7 +21,7 @@ std::string SemaphoreManager::semaphoreIdentifierForProcessWithId(int id) {
 sem_t* SemaphoreManager::getSemaphore(std::string identifier) {
   sem_t* mutex = sem_open(identifier.c_str(), O_CREAT, 0644, 0);
   if (mutex == SEM_FAILED) {
-    perror("semaphore initilization");
+    perror("semaphore initialization");
     exit(1);
   }
   return mutex;

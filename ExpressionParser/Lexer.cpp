@@ -122,4 +122,5 @@ std::shared_ptr<Token> Lexer::scan() {
   }
 }
 void Lexer::unrecognizedTokenException(std::string msg) {
+  //TODO Implement
 }

@@ -61,7 +61,7 @@ std::pair<std::vector<LindaTupleItemTemplate>, std::shared_ptr<Token>> LindaTemp
       }
     }
     else {
-      syntaxException("After comma or ( character - one of the type specifiers should allways occur");
+      syntaxException("After comma or ( character - one of the type specifiers should always occur");
     }
     auto next = lexer.scan();
     if (next->tag == Tag::EndBracket) {

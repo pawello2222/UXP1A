@@ -382,7 +382,7 @@ int LindaTuplePool::NotifyProcessesWaitingForTuple(LindaTuple &tuple) {
             LindaTupleTemplate lindaTupleTemplate = templateParser.parse();
             if (lindaTupleTemplate.IsMatch(tuple)) {
                 notifiedProcessesCount++;
-                //TODO: We should let know, where this typle is
+                //TODO: We should let know, where this tuple is
                 SemaphoreManager::UnlockSemaphoreWithProcessId(fileEntry.processId);
                 this->RemoveEntryTakenFlag(this->m_iWaitingQueueFd);
             }
@@ -394,5 +394,7 @@ int LindaTuplePool::NotifyProcessesWaitingForTuple(LindaTuple &tuple) {
         //Seek forward to beginning of next tuple
         lseek(this->m_iWaitingQueueFd, sizeof(LindaWaitingQueueFileEntry),  SEEK_CUR);
     } while(true);
+
+    return notifiedProcessesCount;
 }
 
