@@ -141,7 +141,6 @@ std::string LindaTemplateParser::convertedStringValueForToken(std::shared_ptr<To
     return identifier->getValue();
   }
   else {
-    //TODO: Should probably throw exception
     throw UnknownLindaTemplateValue("Value shoud be integer, string or float");
   }
 }
