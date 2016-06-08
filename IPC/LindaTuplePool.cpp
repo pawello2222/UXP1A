@@ -10,15 +10,16 @@
 #include "../Exception/LindaFileCorrupt.h"
 #include "../Exception/FileOperationError.h"
 #include "../ExpressionParser/LindaTupleParser.h"
-#include "../Model/LindaWaitingQueueFileEntry.h"
 #include "SemaphoreManager.h"
 #include "../ExpressionParser/LindaTemplateParser.h"
 #include "../Exception/LindaPoolOperationTimedOutException.h"
 #include "../Exception/NoLindaTupleMatchingTemplateException.h"
+#include "../Utilities/TimeUtilities.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <cerrno>
 #include <cstring>
+#include <iostream>
 
 const char LindaTuplePool::FileEntryTakenFlagMask = 0b00000001;
 
@@ -80,12 +81,15 @@ LindaTuple LindaTuplePool::ReadInputInternal(LindaTupleTemplate &tupleTemplate, 
         return tuple;
     }
     catch (NoLindaTupleMatchingTemplateException ex) {
-        //TODO start_time_ms = get_curr_time_millis();
+        auto startTime = TimeUtilities::getCurrentTime();
         do {
-            //TODO unsigned long effectiveTimeout = timeout - (current_time - start_time_ms)
-            if (SemaphoreManager::LockOnSemaphoreWithTimeout(timeout/*TODO effectiveTimeout*/) == -1) {
-                this->RemoveMeFromWaitingQueue();
-                throw LindaPoolOperationTimedOutException();
+            long millisecondsToSubtractFromTimeout = TimeUtilities::calculateDifferenceBetweenTimesInMilliseconds(TimeUtilities::getCurrentTime(), startTime);
+            if (millisecondsToSubtractFromTimeout < timeout) {
+                unsigned long effectiveTimeout = timeout - millisecondsToSubtractFromTimeout;
+                if (SemaphoreManager::LockOnSemaphoreWithTimeout(effectiveTimeout) == -1) {
+                    this->RemoveMeFromWaitingQueue();
+                    throw LindaPoolOperationTimedOutException();
+                }
             }
 
             try {
