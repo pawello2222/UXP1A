@@ -96,7 +96,7 @@ void LindaTuplePool::GuardPoolConnected()
 {
     if (!this->m_bIsConnected)
     {
-        throw InvalidOperation();
+        throw InvalidOperation("Not connected to the pool.");
     }
 }
 

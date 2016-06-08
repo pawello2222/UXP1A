@@ -7,9 +7,13 @@
 
 
 #include <exception>
+#include "MessageExceptionBase.h"
 
-class InvalidOperation : public std::exception
+class InvalidOperation : public MessageExceptionBase
 {
+public:
+    InvalidOperation();
+    InvalidOperation(std::string message);
 
 };
 

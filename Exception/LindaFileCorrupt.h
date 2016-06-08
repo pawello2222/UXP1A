@@ -7,10 +7,12 @@
 
 
 #include <exception>
+#include "MessageExceptionBase.h"
 
-class LindaFileCorrupt : public std::exception
+class LindaFileCorrupt : public MessageExceptionBase
 {
-
+public:
+    LindaFileCorrupt();
 };
 
 

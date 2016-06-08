@@ -3,3 +3,9 @@
 //
 
 #include "LindaTupleMaxSizeExceeded.h"
+
+LindaTupleMaxSizeExceeded::LindaTupleMaxSizeExceeded() : MessageExceptionBase("Linda tuple max size exceeded.")
+{
+
+}
+

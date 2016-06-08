@@ -3,3 +3,8 @@
 //
 
 #include "UnknownLindaTupleType.h"
+
+UnknownLindaTupleType::UnknownLindaTupleType() : MessageExceptionBase("Unknown linda tuple type.")
+{
+
+}

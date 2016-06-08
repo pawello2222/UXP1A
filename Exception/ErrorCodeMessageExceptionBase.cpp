@@ -4,14 +4,9 @@
 
 #include "ErrorCodeMessageExceptionBase.h"
 
-ErrorCodeMessageExceptionBase::ErrorCodeMessageExceptionBase(std::string message, int errorCode) : m_sMessage(message), m_iErrorCode(errorCode)
+ErrorCodeMessageExceptionBase::ErrorCodeMessageExceptionBase(std::string message, int errorCode) : MessageExceptionBase(message), m_iErrorCode(errorCode)
 {
 
-}
-
-std::string ErrorCodeMessageExceptionBase::GetMessage()
-{
-    return this->m_sMessage;
 }
 
 int ErrorCodeMessageExceptionBase::GetErrorCode()

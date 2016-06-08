@@ -3,3 +3,13 @@
 //
 
 #include "InvalidOperation.h"
+
+InvalidOperation::InvalidOperation(std::string message) : MessageExceptionBase(message)
+{
+
+}
+
+InvalidOperation::InvalidOperation()
+{
+
+}

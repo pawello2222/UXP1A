@@ -7,10 +7,12 @@
 
 
 #include <exception>
+#include "MessageExceptionBase.h"
 
-class UnknownLindaTupleOperator : public std::exception
+class UnknownLindaTupleOperator : public MessageExceptionBase
 {
-
+public:
+    UnknownLindaTupleOperator();
 };
 
 

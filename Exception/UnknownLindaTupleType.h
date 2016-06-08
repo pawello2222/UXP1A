@@ -7,10 +7,12 @@
 
 
 #include <exception>
+#include "MessageExceptionBase.h"
 
-class UnknownLindaTupleType : public std::exception
+class UnknownLindaTupleType : public MessageExceptionBase
 {
-
+public:
+    UnknownLindaTupleType();
 };
 
 

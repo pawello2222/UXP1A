@@ -10,9 +10,10 @@
 #include <string>
 #include "ErrorCodeMessageExceptionBase.h"
 
-class LindaTupleMaxSizeExceeded : public std::exception
+class LindaTupleMaxSizeExceeded : public MessageExceptionBase
 {
-
+public:
+    LindaTupleMaxSizeExceeded();
 };
 
 

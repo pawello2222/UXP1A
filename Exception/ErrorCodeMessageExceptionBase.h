@@ -7,15 +7,14 @@
 
 
 #include <string>
+#include "MessageExceptionBase.h"
 
-class ErrorCodeMessageExceptionBase : public std::exception
+class ErrorCodeMessageExceptionBase : public MessageExceptionBase
 {
 public:
     ErrorCodeMessageExceptionBase(std::string message, int errorCode);
-    std::string GetMessage();
     int GetErrorCode();
 protected:
-    std::string m_sMessage;
     int m_iErrorCode;
 };
 

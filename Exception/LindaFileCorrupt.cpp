@@ -3,3 +3,9 @@
 //
 
 #include "LindaFileCorrupt.h"
+
+LindaFileCorrupt::LindaFileCorrupt() : MessageExceptionBase("Linda file is corrupt.")
+{
+
+}
+
