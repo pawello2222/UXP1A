@@ -19,7 +19,7 @@ public:
     LindaTupleItemOperator GetOperator();
     std::string GetValue();
     bool IsMatch( LindaTupleItem& lindaTupleItem );
-
+    std::string FormatValueAsFileEntryData();
 private:
     bool compareFloat( float f );
     bool compareInteger( int i );

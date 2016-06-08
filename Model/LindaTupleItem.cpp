@@ -68,7 +68,5 @@ std::string LindaTupleItem::FormatValueAsFileEntryData()
             return std::to_string(this->m_fValue);
         case LindaTupleItemType::String:
             return "\"" + this->m_sValue + "\"";
-        default:
-            throw UnknownLindaTupleType();
     }
 }

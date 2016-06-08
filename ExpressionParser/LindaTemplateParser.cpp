@@ -101,6 +101,7 @@ LindaTupleItemOperator LindaTemplateParser::operatorBasedOnToken(std::shared_ptr
       return LindaTupleItemOperator::lt;
     case Tag::LessThanOrEqual:
       return LindaTupleItemOperator::le;
+    default: break;
   }
   syntaxException("Only >, <, ==, <=, >= operators should occur");
 }
@@ -119,8 +120,9 @@ void LindaTemplateParser::makeSureThatTagMatchesType(Tag tag, LindaTupleItemType
 
 void LindaTemplateParser::makeSureThatOperatorMatchesType(LindaTupleItemOperator lindaTupleItemOperator,
                                                           LindaTupleItemType type) {
-  if (type == LindaTupleItemType::Float && lindaTupleItemOperator == LindaTupleItemOperator::eq) {
-    syntaxException("== operator for floats is not supported");
+  if (type == LindaTupleItemType::Float && (lindaTupleItemOperator == LindaTupleItemOperator::eq
+      || lindaTupleItemOperator == LindaTupleItemOperator::ge || lindaTupleItemOperator == LindaTupleItemOperator::le)) {
+    syntaxException("==, >=, <= operators for floats is not supported");
   }
 }
 
