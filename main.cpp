@@ -36,9 +36,9 @@ int main()
         {
             std::string tuplesFilePath, waitingQueueFilePath;
             std::cout << "Tuples file path: ";
-            std::cin >> tuplesFilePath;
+            std::getline(std::cin, tuplesFilePath);
             std::cout << "Waiting queue file path: ";
-            std::cin >> waitingQueueFilePath;
+            std::getline(std::cin, waitingQueueFilePath);
             pool.ConnectPool(tuplesFilePath, waitingQueueFilePath);
         }
         else if (command == "disconnect")
@@ -50,7 +50,7 @@ int main()
             std::string tupleTemplateString;
             unsigned long timeout;
             std::cout << "Tuple template: ";
-            std::cin >> tupleTemplateString;
+            std::getline(std::cin, tupleTemplateString);
             std::cout << "Timeout (ms): ";
             std::cin >> timeout;
             LindaTemplateParser parser(tupleTemplateString);
@@ -70,7 +70,7 @@ int main()
 
             std::string tupleString;
             std::cout << "Tuple: ";
-            std::cin >> tupleString;
+            std::getline(std::cin, tupleString);
             LindaTupleParser parser(tupleString);
             LindaTuple tuple = parser.parse();
             pool.Output(tuple);
@@ -80,7 +80,7 @@ int main()
             std::string tupleTemplateString;
             unsigned long timeout;
             std::cout << "Tuple template: ";
-            std::cin >> tupleTemplateString;
+            std::getline(std::cin, tupleTemplateString);
             std::cout << "Timeout (ms): ";
             std::cin >> timeout;
             LindaTemplateParser parser(tupleTemplateString);
