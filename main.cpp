@@ -9,6 +9,7 @@
 #include "ExpressionParser/LindaTupleParser.h"
 #include "ExpressionParser/LindaTemplateParser.h"
 #include "IPC/SemaphoreManager.h"
+#include "Exception/LindaPoolOperationTimedOutException.h"
 
 void display_help()
 {
@@ -55,8 +56,15 @@ int main()
             std::cin >> timeout;
             LindaTemplateParser parser(tupleTemplateString);
             LindaTupleTemplate tupleTemplate = parser.parse();
-            LindaTuple tuple = pool.Input(tupleTemplate, timeout);
-            std::cout << tuple.ToString() << std::endl;
+
+            try {
+                LindaTuple tuple = pool.Input(tupleTemplate, timeout);
+                std::cout << tuple.ToString() << std::endl;
+            }
+            catch (LindaPoolOperationTimedOutException ex) {
+                std::cout << "Timed out." << std::endl;
+            }
+
         }
         else if (command == "output")
         {
@@ -79,8 +87,14 @@ int main()
             std::cin >> timeout;
             LindaTemplateParser parser(tupleTemplateString);
             LindaTupleTemplate tupleTemplate = parser.parse();
-            LindaTuple tuple = pool.Read(tupleTemplate, timeout);
-            std::cout << tuple.ToString() << std::endl;
+            try {
+                LindaTuple tuple = pool.Read(tupleTemplate, timeout);
+                std::cout << tuple.ToString() << std::endl;
+            }
+            catch (LindaPoolOperationTimedOutException ex) {
+                std::cout << "Timed out." << std::endl;
+            }
+
         }
         else if (command == "exit")
         {

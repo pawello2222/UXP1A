@@ -13,7 +13,7 @@
 #include "../Model/LindaWaitingQueueFileEntry.h"
 #include "SemaphoreManager.h"
 #include "../ExpressionParser/LindaTemplateParser.h"
-#include "../Exception/LindaTupleOperationTimedOutException.h"
+#include "../Exception/LindaPoolOperationTimedOutException.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <cerrno>
@@ -331,7 +331,7 @@ LindaTuple LindaTuplePool::AddToWaitingQueueForTemplate(LindaTupleTemplate &tupl
     UnlockCurrentQueueEntry();
     auto result = SemaphoreManager::LockOnSemaphoreWithTimeout(timeout);
     if (result == -1) {
-        throw LindaTupleOperationTimedOutException();
+        throw LindaPoolOperationTimedOutException();
     }
     else {
         //TODO: Now we should read entry from given line.
