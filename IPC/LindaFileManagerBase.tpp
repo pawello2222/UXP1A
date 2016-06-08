@@ -53,7 +53,7 @@ template<typename T1, typename T2>
 ssize_t LindaFileManagerBase<T1, T2>::WriteAndSeekBack(T2 &obj)
 {
     T1 fileEntry = this->CreateFileEntry(obj);
-    return this->WriteAndSeekBack(reinterpret_cast<char*>(&fileEntry), sizeof(fileEntry));
+    return this->WriteFileEntryAndSeekBack(fileEntry);
 }
 
 template<typename T1, typename T2>
