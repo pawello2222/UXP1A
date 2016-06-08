@@ -30,7 +30,7 @@ sem_t* SemaphoreManager::getSemaphore(std::string identifier) {
 int SemaphoreManager::LockOnSemaphoreWithTimeout(unsigned long timeout) {
   struct timespec currentTimespec;
   if( clock_gettime( CLOCK_REALTIME, &currentTimespec) == -1 ) {
-    throw SemaphoreLockingError("Cannot get current time while setting semaphore timeout", -3);
+    throw SemaphoreLockingError("Cannot get current time while setting semaphore timeout", errno);
   }
 
   struct timespec millisecondsTimespec;

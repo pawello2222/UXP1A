@@ -6,12 +6,12 @@
 #define UXP1A_LINDATUPLEFORMATERROR_H
 
 
-#include "ErrorCodeMessageExceptionBase.h"
+#include "MessageExceptionBase.h"
 
-class LindaTupleFormatError: public ErrorCodeMessageExceptionBase
+class LindaTupleFormatError: public MessageExceptionBase
 {
  public:
-  LindaTupleFormatError(std::string message, int errorCode);
+  LindaTupleFormatError(std::string message);
 };
 
 

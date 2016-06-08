@@ -12,9 +12,7 @@
 class InvalidOperation : public MessageExceptionBase
 {
 public:
-    InvalidOperation();
     InvalidOperation(std::string message);
-
 };
 
 

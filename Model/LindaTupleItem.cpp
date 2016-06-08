@@ -53,7 +53,7 @@ void LindaTupleItem::GuardTypeEquals(LindaTupleItemType lindaTupleItemType)
 {
     if (this->m_type != lindaTupleItemType)
     {
-        throw InvalidOperation();
+        throw InvalidOperation("Linda tuple item types are not equal.");
     }
 }
 

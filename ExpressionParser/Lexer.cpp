@@ -121,9 +121,9 @@ std::shared_ptr<Token> Lexer::scan() {
     }
   else {
       std::string peekInString(1, peek);
-      throw UnrecognizedCharacter("Unrecognized token found: " + peekInString, -1);
+      throw UnrecognizedCharacter("Unrecognized token found: " + peekInString);
   }
 }
 void Lexer::unrecognizedTokenException(std::string msg) {
-  throw UnrecognizedToken(msg, -1);
+  throw UnrecognizedToken(msg);
 }

@@ -5,10 +5,10 @@
 #ifndef UXP1A_UNRECOGNIZEDTOKEN_H
 #define UXP1A_UNRECOGNIZEDTOKEN_H
 
-#include "ErrorCodeMessageExceptionBase.h"
-class UnrecognizedToken : public ErrorCodeMessageExceptionBase
+#include "MessageExceptionBase.h"
+class UnrecognizedToken : public MessageExceptionBase
 {
  public:
-  UnrecognizedToken(std::string message, int errorCode): ErrorCodeMessageExceptionBase(message, errorCode) {}
+  UnrecognizedToken(std::string message): MessageExceptionBase(message) {}
 };
 #endif //UXP1A_UNRECOGNIZEDTOKEN_H

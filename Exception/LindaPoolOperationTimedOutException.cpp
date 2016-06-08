@@ -6,6 +6,6 @@
 
 
 LindaPoolOperationTimedOutException::LindaPoolOperationTimedOutException()
-    : ErrorCodeMessageExceptionBase("No tuple has been found ", -1) {
+    : MessageExceptionBase("No tuple has been found ") {
 
 }

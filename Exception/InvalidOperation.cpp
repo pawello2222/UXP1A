@@ -8,8 +8,3 @@ InvalidOperation::InvalidOperation(std::string message) : MessageExceptionBase(m
 {
 
 }
-
-InvalidOperation::InvalidOperation()
-{
-
-}

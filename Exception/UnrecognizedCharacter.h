@@ -6,11 +6,11 @@
 #define UXP1A_UNRECOGNIZEDCHARACTER_H
 
 #include <string>
-#include "ErrorCodeMessageExceptionBase.h"
-class UnrecognizedCharacter : public ErrorCodeMessageExceptionBase
+#include "MessageExceptionBase.h"
+class UnrecognizedCharacter : public MessageExceptionBase
 {
  public:
-  UnrecognizedCharacter(std::string message, int errorCode): ErrorCodeMessageExceptionBase(message, errorCode) {}
+  UnrecognizedCharacter(std::string message): MessageExceptionBase(message) {}
 };
 
 

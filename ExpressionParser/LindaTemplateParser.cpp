@@ -86,7 +86,7 @@ LindaTupleItemType LindaTemplateParser::typeBasedOnWord(std::shared_ptr<Word> wo
 }
 
 void LindaTemplateParser::syntaxException(std::string message) {
-  throw LindaTupleTemplateFormatError(message, -1);
+  throw LindaTupleTemplateFormatError(message);
 }
 
 LindaTupleItemOperator LindaTemplateParser::operatorBasedOnToken(std::shared_ptr<Token> token) {

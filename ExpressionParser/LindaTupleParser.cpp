@@ -9,7 +9,7 @@
 #include "../Exception/LindaTupleFormatError.h"
 
 void LindaTupleParser::syntaxException(std::string message) {
-  throw LindaTupleFormatError(message, -1);
+  throw LindaTupleFormatError(message);
 }
 
 LindaTuple LindaTupleParser::parse() {

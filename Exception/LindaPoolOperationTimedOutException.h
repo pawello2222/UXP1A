@@ -6,8 +6,9 @@
 #define UXP1A_LINDAPOOLOPERATIONTIMEDOUTEXCEPTION_H
 
 
-#include "ErrorCodeMessageExceptionBase.h"
-class LindaPoolOperationTimedOutException: public ErrorCodeMessageExceptionBase
+#include "MessageExceptionBase.h"
+
+class LindaPoolOperationTimedOutException: public MessageExceptionBase
 {
  public:
   LindaPoolOperationTimedOutException();

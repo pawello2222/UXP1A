@@ -4,7 +4,7 @@
 
 #include "LindaTupleTemplateFormatError.h"
 
-LindaTupleTemplateFormatError::LindaTupleTemplateFormatError(std::string message, int errorCode)
-    : ErrorCodeMessageExceptionBase(message, errorCode) {
+LindaTupleTemplateFormatError::LindaTupleTemplateFormatError(std::string message)
+    : MessageExceptionBase(message) {
 
 }
