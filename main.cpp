@@ -32,6 +32,7 @@ int main()
         std::string command;
         std::cout << "Enter command: ";
         std::cin >> command;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n' );
         if (command == "connect")
         {
             std::string tuplesFilePath, waitingQueueFilePath;
