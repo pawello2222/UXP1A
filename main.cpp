@@ -27,6 +27,8 @@ int main()
     LindaTuplePool pool;
     display_help();
 
+    pool.ConnectPool("/tmp/tuples", "/tmp/queue");
+
     while(true)
     {
         std::string command;
@@ -94,7 +96,6 @@ int main()
             catch (LindaPoolOperationTimedOutException ex) {
                 std::cout << "Timed out." << std::endl;
             }
-
         }
         else if (command == "exit")
         {

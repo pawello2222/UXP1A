@@ -23,10 +23,10 @@ public:
     LindaTuple Input(LindaTupleTemplate& tupleTemplate, unsigned long timeout);
     void Output(LindaTuple& tuple);
 private:
-
+    LindaTuple ReadInputInternal(LindaTupleTemplate& tupleTemplate, unsigned long timeout, bool removeTuple);
     void GuardPoolConnected();
-    void FindAndLockUnusedEntry();
-    LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate, unsigned long timeout);
+    void FindAndLockUnusedTupleEntry();
+    LindaTuple ReadAndLock(LindaTupleTemplate &tupleTemplate);
     LindaTuplesFileEntry CreateTupleFileEntry(LindaTuple &tuple);
 
     void RemoveEntryTakenFlag(int fileDescriptor);
@@ -34,9 +34,11 @@ private:
     int UnlockCurrentTupleEntry();
     int LockCurrentQueueEntry();
     int UnlockCurrentQueueEntry();
+    ssize_t WriteAndSeekBack(int fileDescriptor, char* buffer, size_t size);
 
     LindaWaitingQueueFileEntry CreateWaitingQueueEntry(LindaTupleTemplate &tuple);
-    LindaTuple AddToWaitingQueueForTemplate(LindaTupleTemplate& tupleTemplate, unsigned long timeout);
+    void AddMeToWaitingQueueForTemplate(LindaTupleTemplate& tupleTemplate);
+    void RemoveMeFromWaitingQueue();
     int NotifyProcessesWaitingForTuple(LindaTuple& tuple);
 
     int m_iTuplesFd;

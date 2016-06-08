@@ -21,7 +21,6 @@ class LindaTupleParser {
  public:
 
   LindaTupleParser(const LindaTuplesFileEntry &entry) : entry(entry.TupleData) { }
-  LindaTupleParser(const LindaWaitingQueueFileEntry &entry): entry(entry.TupleData) {}
   LindaTupleParser(const std::string &tupleString): entry(tupleString) {}
   LindaTuple parse();
 };

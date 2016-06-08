@@ -9,7 +9,7 @@
 struct LindaWaitingQueueFileEntry
 {
     char Flags;
-    char TupleData[255];
+    char TupleTemplateData[251];
     int processId;
 };
 #endif //UXP1A_LINDAWAITINGQUEUEFILEENTRY_H

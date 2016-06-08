@@ -14,6 +14,7 @@ class LindaTupleTemplate
 public:
     LindaTupleTemplate(std::vector<LindaTupleItemTemplate> itemTemplates);
     bool IsMatch(LindaTuple &lindaTuple);
+    std::string ToString();
 private:
     std::vector<LindaTupleItemTemplate> m_itemTemplates;
 };

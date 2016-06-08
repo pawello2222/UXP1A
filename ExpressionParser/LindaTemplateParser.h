@@ -29,8 +29,7 @@ class LindaTemplateParser {
   std::string convertedStringValueForToken(std::shared_ptr<Token> token);
  public:
 
-  LindaTemplateParser(const LindaTuplesFileEntry &entry) : entry(entry.TupleData) { }
-  LindaTemplateParser(const LindaWaitingQueueFileEntry &entry): entry(entry.TupleData) {}
+  LindaTemplateParser(const LindaWaitingQueueFileEntry &entry): entry(entry.TupleTemplateData) {}
   LindaTemplateParser(const std::string &lindaTemplateString): entry(lindaTemplateString) { }
   LindaTupleTemplate parse();
 };
