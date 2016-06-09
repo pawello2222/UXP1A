@@ -29,6 +29,10 @@ LindaTuplePool::~LindaTuplePool()
 
 void LindaTuplePool::ConnectPool(std::string lindaTuplesFilePath, std::string lindaWaitingQueueFilePath)
 {
+    if (this->m_bIsConnected) {
+        throw InvalidOperation("Already connected to a Linda pool.");
+    }
+
     try {
         this->m_pTuplesFileManager = std::unique_ptr<LindaTuplesFileManager>(new LindaTuplesFileManager(lindaTuplesFilePath));
     }
@@ -43,18 +47,15 @@ void LindaTuplePool::ConnectPool(std::string lindaTuplesFilePath, std::string li
         this->m_pTuplesFileManager = std::unique_ptr<LindaTuplesFileManager>();
         throw LindaTuplePoolConnectionError("Error when opening waiting queue file.", errno);
     }
-
     this->m_bIsConnected = true;
 }
 
 void LindaTuplePool::DisconnectPool()
 {
-    if (this->m_bIsConnected)
-    {
-        this->m_pTuplesFileManager = std::unique_ptr<LindaTuplesFileManager>();
-        this->m_pQueueFileManager = std::unique_ptr<LindaQueueFileManager>();
-        this->m_bIsConnected = false;
-    }
+    this->GuardPoolConnected();
+    this->m_pTuplesFileManager = std::unique_ptr<LindaTuplesFileManager>();
+    this->m_pQueueFileManager = std::unique_ptr<LindaQueueFileManager>();
+    this->m_bIsConnected = false;
 }
 
 LindaTuple LindaTuplePool::ReadInputInternal(LindaTupleTemplate &tupleTemplate, unsigned long timeout, bool removeTuple)
