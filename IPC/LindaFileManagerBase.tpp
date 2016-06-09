@@ -4,6 +4,7 @@
 
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 #include "LindaFileManagerBase.h"
 #include "../Exception/FileOperationError.h"
 #include "../Exception/LockingError.h"
@@ -69,7 +70,7 @@ int LindaFileManagerBase<T1, T2>::UnlockCurrentEntry()
 }
 
 template<typename T1, typename T2>
-void LindaFileManagerBase<T1, T2>::Seek(__off_t offset, int whence)
+void LindaFileManagerBase<T1, T2>::Seek(int offset, int whence)
 {
     lseek(this->m_iFileDescriptor, offset, whence);
 }
@@ -94,7 +95,7 @@ ssize_t LindaFileManagerBase<T1, T2>::WriteAndSeekBack(char *buffer, size_t size
 }
 
 template<typename T1, typename T2>
-bool LindaFileManagerBase<T1, T2>::FindAndLockFileEntry(std::function<bool(T1)> predicate, bool processOnlyFirstMatchingPredicate, std::function<void(T1 foundFileEntry)> onFound)
+    bool LindaFileManagerBase<T1, T2>::FindAndLockFileEntry(std::function<bool(T1)> predicate, bool processOnlyFirstMatchingPredicate, std::function<void(T1 foundFileEntry)> onFound)
 {
     bool found = false;
     this->Seek(0, SEEK_SET);

@@ -8,6 +8,7 @@
 
 #include <string>
 #include <algorithm>
+#include <functional>
 
 template<typename T1, typename T2>
 class LindaFileManagerBase
@@ -19,7 +20,7 @@ public:
     ssize_t WriteAndSeekBack(T2 &obj);
     int LockCurrentEntry();
     int UnlockCurrentEntry();
-    void Seek(__off_t offset, int whence);
+    void Seek(int offset, int whence);
     ssize_t ReadAndSeekBack(void *buffer, size_t bytesToRead);
     void FindAndLockUnusedFileEntry();
 protected:

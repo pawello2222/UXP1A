@@ -105,6 +105,9 @@ std::shared_ptr<Token> Lexer::scan() {
     while (true) {
         readChar();
         if (peek == '\"') { return std::make_shared<Identifier>(buffer); }
+        if (peek == '\n' || peek == '\t' || peek == '\0') {
+          throw UnrecognizedCharacter("String identifier should end with \" . Special character occured: new line, tab or end of input, try again");
+        }
         buffer += peek;
       }
     }
